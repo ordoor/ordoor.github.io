@@ -1,4 +1,3 @@
-/*
 function randomgen(first, max, repetitions) {
   let minimum;
   let maximum;
@@ -27,8 +26,6 @@ function randomgen(first, max, repetitions) {
     return Math.floor(Math.random() * maximum + minimum)
   }
 }
-
-*/
 function $(querySelector, parent = document) {
   if (typeof querySelector == "function") {
     document.addEventListener("load", querySelector)
@@ -38,7 +35,7 @@ function $(querySelector, parent = document) {
 function $$(querySelectorAll, parent = document) {
   return parent.querySelectorAll(querySelectorAll)
 }
-Element.prototype.ancestor = function ancestor(numbUp) {
+Element.prototype.ancestor = function(numbUp) {
   ele = this
   for (let i = 0; i < numbUp; i++) {
     ele = ele.parentNode
