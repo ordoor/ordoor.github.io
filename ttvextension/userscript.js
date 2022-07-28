@@ -20,11 +20,11 @@
     } else if(localStorage.getItem('ext-version')?.startsWith('http')){
        script.src = localStorage.getItem('ext-version');
     } else {
-        script.src = 'https://drive.google.com/uc?export=view&id=1yYu85iIKUTe6SNG5XbMQnEQEBtX722An&confirm=t';
+        script.src = 'https://ordoor.github.io/ttvextension/default.js';
     }
     var link = document.createElement('link');
     link.rel = "stylesheet"
-    link.href = "https://drive.google.com/uc?export=view&id=1-ip_6aXj7I3P56ne2nGu83YREo1y6dDL&confirm=t"
+    link.href = "https://ordoor.github.io/ttvextension/ext.css"
     var head = document.getElementsByTagName('head')[0];
     if (!head) return;
     head.appendChild(script);
