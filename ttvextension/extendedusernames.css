@@ -1,0 +1,64 @@
+#extExternalCSSusernameSearchTerms::before{
+    content: "temmies/GenericImportant|nightmargin/GenericImportant|gingerpale/GenericImportant|sophietexas/GenericImportant|technoblade/technoblade|philza/GenericImportant|tommyinnit/GenericImportant|wilbursoot/GenericImportant|tubbo/GenericImportant|tubbolive/GenericImportant|ranboolive/GenericImportant|aimsey/GenericImportant|smajor/GenericImportant|jackmanifoldtv/GenericImportant|nihachu/GenericImportant|quackity/GenericImportant|badboyhalo/GenericImportant|skeppy/GenericImportant|cuptoast/GenericImportant|jschlatt/GenericImportant|michaelmcchill/GenericImportant|sneegsnag/GenericImportant|shroombies/GenericImportant|austinshow/GenericImportant|disguisedtoast/GenericImportant|pokimane/GenericImportant|brofain/GenericImportant|natsumiii/GenericImportant|ironmouse/GenericImportant|btdisab/GenericImportant|cg5music/GenericImportant|drewtheducky/GenericImportant|maesterroshi69/GenericImportant|littlelyrebird/GenericImportant|streamlabs/GenericBot|fossabot/GenericBot|nightbot/GenericBot|streamelements/GenericBot|jacksepticeye/GenericBot|markiplier /GenericImportant";
+    /*Thanks drewtheducky, MaesterRoshi69 and littlelyrebird for the gifted subs to BadBoyHalo, ironmouse, and RanbooLive respectively*/
+    /*In memory of technoblade*/
+}
+#extExternalCSSusernameSearchTerms{
+    display: none;
+}
+:root{
+    --extStyleName-Technoblade: white;/*#e82c2c*/
+    --extStyleNameContainer-Technoblade: rgba(255, 192, 203, 0.623);
+    --extStyleLine-Technoblade: #ff006a88;
+
+    /*--extStyleName-GenericImportant: #2ce83c;*/
+    --extStyleNameContainer-GenericImportant: #772ce8;
+    --extStyleLine-GenericImportant: #e82c7a88;
+
+    --extStyleLine-GenericBot: 0.2;
+
+    --extStyleLine-GenericSelf: #58280044;
+}
+.UsernameIs-technoblade {
+    color: var(--extStyleName-Technoblade) !important;
+    font-weight: 900 !important;
+    font-style: italic;
+}
+.chat-line__username-container-UsernameIs-technoblade {
+    background-color: var(--extStyleNameContainer-Technoblade);
+}
+.chat-line-UsernameIs-technoblade{
+    background-color: var(--extStyleLine-Technoblade);    
+}
+.UsernameIs-GenericImportant {
+    /*color: var(--extStyleName-GenericImportant) !important;*/
+    font-weight: 900 !important;
+    font-style: italic;
+}
+.chat-line__username-container-UsernameIs-GenericImportant {
+    background-color: var(--extStyleNameContainer-GenericImportant);
+}
+.chat-line-UsernameIs-GenericImportant{
+    background-color: var(--extStyleLine-GenericImportant);;    
+}
+.chat-line-UsernameIs-GenericBot{
+    opacity: var(--extStyleLine-GenericBot);    
+}
+.chat-line-UsernameIs-GenericBot:hover{
+    opacity: 1;    
+}
+.chat-line-UsernameIs-GenericSelf{
+    background-color: var(--extStyleLine-GenericSelf);;    
+}
+.chat-line__message:has([data-a-user=fossabot]){
+    opacity: var(--extStyleLine-GenericBot);
+}
+.chat-line__message:has([data-a-user=fossabot]):hover{
+    opacity: 1;    
+}
+.chat-line__message:has([data-a-user=streamlabs]){
+    opacity: var(--extStyleLine-GenericBot);
+}
+.chat-line__message:has([data-a-user=streamlabs]):hover{
+    opacity: 1;    
+}

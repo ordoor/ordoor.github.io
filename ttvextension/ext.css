@@ -1,0 +1,375 @@
+.UsernameIs-ordoor {
+    color: rgb(0, 255, 127);
+    /* background-image: linear-gradient(to right, red, yellow ); */
+    /*-webkit-background-clip: text;*/
+    /*moz-background-clip: text;*/
+    /*background-clip: text;*/
+    /*color: transparent !important;*/
+    /*font-weight: 900 !important;*/
+    /*font-style: italic;*/
+}
+.chat-line__username-container-UsernameIs-ordoor {
+    background-color: red;
+    /*background-color: #2ce8df;*/
+    /*background-color: #772ce8;*/
+}
+.chat-line-UsernameIs-ordoor{
+    background-color: #00f59388;
+    /*background-color: #e82c7a88;*/
+}
+.stream-chat-header {
+    transition: height 50ms ease;
+}
+.extButton {
+    background-color: #18181b;
+    color: white;
+    height: 27px;
+    width: 27px;
+    border-radius: 0.4rem;
+    border-width: 0rem;
+    font-weight: 600;
+    float: right;
+}
+.extButton:hover {
+    background-color: #464649;
+    color: white;
+    vertical-align: middle;
+    height: 27px;
+    width: 27px;
+    border-radius: 0.4rem;
+    border-width: 0rem;
+    font-weight: 600;
+}
+.extCloseButton {
+    background-color: #18181b;
+    color: white;
+    height: 27px;
+    width: 27px;
+    border-radius: 0.4rem;
+    border-width: 0rem;
+    font-weight: 600;
+}
+.extCloseButton:hover {
+    background-color: #464649;
+    color: white;
+    vertical-align: middle;
+    height: 27px;
+    width: 27px;
+    border-radius: 0.4rem;
+    border-width: 0rem;
+    font-weight: 600;
+}
+.extInfoButton {
+    background-color: #18181b;
+    color: white;
+    height: 27px;
+    width: 27px;
+    border-radius: 0.4rem;
+    border-width: 0rem;
+    font-weight: 600;
+    float: right;
+}
+.extInfoButton:hover {
+    background-color: #464649;
+    color: white;
+    vertical-align: middle;
+    height: 27px;
+    width: 27px;
+    border-radius: 0.4rem;
+    border-width: 0rem;
+    font-weight: 600;
+}
+.extPopup {
+    visibility: hidden;
+    position: absolute;
+    z-index: 1000;
+    height: 320px;
+    width: 324px;
+    background-color: #18181b;
+    border-radius: 1rem;
+    border: black solid 2px;
+    font-weight: 600;
+    margin-left: 10px;
+    margin-right: 3px;
+    padding: 10px;
+    bottom: 45px;
+    float: right;
+    transition: height 200ms ease, opacity 200ms ease;
+}
+.extCloseButtonText {
+    padding: 7px;
+}
+.extInfoButtonText {
+    padding: 7px 7px 7px 6px;
+    font-weight: normal;
+    font-size: 1.8rem;
+}
+.extOptions {
+    width: 280px;
+    height: 200px;
+    border-top: 1px solid #303032;
+    margin: 7px;
+}
+body {
+    background-color: #18181b;
+}
+.input {
+    border: 1px solid #737375;
+    background-color: #4c4c4f;
+    color: white;
+    height: 156px;
+    width: 280px;
+    overflow-wrap: break-word;
+    white-space: pre-wrap;
+    padding: 12px 67px 12px 12px;
+    outline: none;
+    border-radius: 0.4rem;
+}
+.input:focus {
+    border: 3px solid #a970ff;
+    background-color: #000;
+    color: white;
+    height: 156px;
+    width: 280px;
+    overflow-wrap: break-word;
+    white-space: pre-wrap;
+    padding: 10px 65px 10px 10px;
+}
+.text {
+    color: #dedee3;
+    font-size: 1.5rem;
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: 600;
+
+}
+.preset {
+    height: 150px;
+    width: 250px;
+    padding: 20px;
+    margin : 5px;
+    border: 2px solid black;
+}
+.presetH {
+    margin : 40px;
+    display: inline-block;
+}
+.apply {
+    background-color: #9147ff;
+    color: white;
+    vertical-align: middle;
+    height: 27px;
+    width: 60px;
+    border-radius: 0.4rem;
+    border-width: 0rem;
+    font-weight: 600;
+    padding: 0px 10px;
+}
+.apply:hover {
+    background-color: #772ce8;
+    cursor: pointer;
+}
+#toggleLeaderboard {
+    background-color: #ffd700;
+    color: white;
+    vertical-align: middle;
+    height: 27px;
+    width: 27px;
+    border-radius: 0.4rem;
+    border-width: 0rem;
+    font-weight: 600;
+    padding: 0px 7px;
+}
+#skip15{
+    height: 22px;
+    width: 22px;
+}
+#skip15p{
+    background-color: #69696988;
+    color: white;
+    vertical-align: middle;
+    height: 27px;
+    width: 27px;
+    border-radius: 0.4rem;
+    border-width: 0rem;
+    font-weight: 600;
+    padding: 0px 7px;
+}
+#skip15p:hover{
+    opacity: 0.5;
+}
+#toggleLeaderboard:hover {
+    background-color: #bea200;
+    cursor: pointer;
+}
+#AllowHTMLdiv{
+    display: inline;
+}
+#disableLeaderboard {
+    background-color: #ff0404;
+    color: white;
+    vertical-align: middle;
+    height: 27px;
+    width: 27px;
+    border-radius: 0.4rem;
+    border-width: 0rem;
+    font-weight: 600;
+    padding: 0px 7px;
+}
+#disableLeaderboard:hover {
+    background-color: #bb0000;
+    color: white;
+    vertical-align: middle;
+    height: 27px;
+    width: 27px;
+    border-radius: 0.4rem;
+    border-width: 0rem;
+    font-weight: 600;
+}
+#applyDefaultPreset {
+    background-color: #18181b;
+    color: white;
+    vertical-align: middle;
+    height: 27px;
+    width: 35px;
+    border-radius: 0.4rem;
+    border-width: 0rem;
+    font-weight: 600;
+    padding: 0px 7px;
+}
+#applyDefaultPreset:hover {
+    background-color: #464649;
+    color: white;
+    vertical-align: middle;
+    height: 27px;
+    width: 35px;
+    border-radius: 0.4rem;
+    border-width: 0rem;
+    font-weight: 600;
+}
+#applySpanPreset {
+    background-color: #18181b;
+    color: white;
+    vertical-align: middle;
+    height: 27px;
+    width: 27px;
+    border-radius: 0.4rem;
+    border-width: 0rem;
+    font-weight: 600;
+    padding: 0px 7px;
+}
+#applySpanPreset:hover {
+    background-color: #464649;
+    color: white;
+    vertical-align: middle;
+    height: 27px;
+    width: 27px;
+    border-radius: 0.4rem;
+    border-width: 0rem;
+    font-weight: 600;
+}
+#applySpanColorPreset {
+    background-color: #18181b;
+    color: white;
+    vertical-align: middle;
+    height: 27px;
+    width: 27px;
+    border-radius: 0.4rem;
+    border-width: 0rem;
+    font-weight: 600;
+    padding: 0px 7px;
+}
+#applySpanColorPreset:hover {
+    background-color: #464649;
+    color: white;
+    vertical-align: middle;
+    height: 27px;
+    width: 27px;
+    border-radius: 0.4rem;
+    border-width: 0rem;
+    font-weight: 600;
+}
+#applyUnorderedListPreset {
+    background-color: #18181b;
+    color: white;
+    vertical-align: middle;
+    height: 27px;
+    width: 27px;
+    border-radius: 0.4rem;
+    border-width: 0rem;
+    font-weight: 600;
+    padding: 0px 10px;
+}
+#applyUnorderedListPreset:hover {
+    background-color: #464649;
+    color: white;
+    vertical-align: middle;
+    height: 27px;
+    width: 27px;
+    border-radius: 0.4rem;
+    border-width: 0rem;
+    font-weight: 600;
+}
+#applyTablePreset {
+    background-color: #18181b;
+    color: white;
+    vertical-align: middle;
+    height: 27px;
+    width: 27px;
+    border-radius: 0.4rem;
+    border-width: 0rem;
+    font-weight: 600;
+    padding: 0px 10px;
+}
+#applyTablePreset:hover {
+    background-color: #464649;
+    color: white;
+    vertical-align: middle;
+    height: 27px;
+    width: 27px;
+    border-radius: 0.4rem;
+    border-width: 0rem;
+    font-weight: 600;
+}
+#injectExtButtons {
+    background-color: #18181b;
+    color: white;
+    vertical-align: middle;
+    height: 27px;
+    width: 27px;
+    border-radius: 0.4rem;
+    border-width: 0rem;
+    font-weight: 600;
+    padding: 0px 10px;
+}
+#injectExtButtons:hover {
+    background-color: #464649;
+    color: white;
+    vertical-align: middle;
+    height: 27px;
+    width: 27px;
+    border-radius: 0.4rem;
+    border-width: 0rem;
+    font-weight: 600;
+}
+#applyNoCapPreset  {
+    background-color: #18181b;
+    color: white;
+    vertical-align: middle;
+    height: 27px;
+    width: 27px;
+    border-radius: 0.4rem;
+    border-width: 0rem;
+    font-weight: 600;
+    padding: 0px 10px;
+}
+#applyNoCapPreset:hover {
+    background-color: #464649;
+    color: white;
+    vertical-align: middle;
+    height: 27px;
+    width: 27px;
+    border-radius: 0.4rem;
+    border-width: 0rem;
+    font-weight: 600;
+    padding: 0px 10px;
+}
