@@ -105,7 +105,7 @@ let extOptionsHTMLpre = `
 
 let extExternalCSS = document.createElement("link")
 extExternalCSS.rel = "stylesheet"
-extExternalCSS.href = localStorage.getItem('ext-ul') == 'default' ? "https://https://ordoor.github.io/ttvextension/defaultUsernames.css" : localStorage.getItem('ext-ul')
+extExternalCSS.href = localStorage.getItem('ext-ul') == 'default' || !localStorage.getItem('ext-ul') ? "https://https://ordoor.github.io/ttvextension/defaultUsernames.css" : localStorage.getItem('ext-ul')
 $("head").appendChild(extExternalCSS)
 let extExternalCSSusernameSearchTerms = document.createElement("p")
 extExternalCSSusernameSearchTerms.id = "extExternalCSSusernameSearchTerms"
