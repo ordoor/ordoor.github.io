@@ -1,0 +1,15 @@
+#extExternalCSSusernameSearchTerms::before{
+    content: "streamlabs/GenericBot|fossabot/GenericBot|nightbot/GenericBot|streamelements/GenericBot";
+}
+#extExternalCSSusernameSearchTerms{
+    display: none;
+}
+:root{
+    --extStyleLine-GenericBot: 0.2;
+}
+.chat-line-UsernameIs-GenericBot{
+    opacity: var(--extStyleLine-GenericBot);    
+}
+.chat-line-UsernameIs-GenericBot:hover{
+    opacity: 1;    
+}
