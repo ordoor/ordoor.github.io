@@ -77,20 +77,6 @@ let usernameSearchTerms = [
   { Name: "ironmouse", Class: "GenericImportant" },
   { Name: "btdisab", Class: "GenericImportant" },*/
 ]
-let customCommands = [
-  { from: /\/n/gi, to: '<br>' },
-  { from1: /\#useSpanShortcuts/, to: '' },
-  { from: /s\//gi, to: '<span style="/nextVal/' },
-  { from: /\/nextVal\/c:/gi, to: 'color: ' },
-  { from: /\; c:/gi, to: '; color: ' },
-  { from: /\/nextVal\/tt=n/gi, to: '; text-transform:none' },
-  { from: /\/nextVal\/tt=/gi, to: '; text-transform:' },
-  { from: /\; tt=n/gi, to: '; text-transform:none' },
-  { from: /\; tt=/gi, to: '; text-transform:' },
-  { from: /\;\//gi, to: '">' },
-  { from: /\/s/gi, to: '</span>' },
-  { from: /#n/gi, to: '<br>' },
-];
 let extOptionsHTMLpre = `
   <div>
     <div class="presetShortcuts">
@@ -119,7 +105,7 @@ let extOptionsHTMLpre = `
 
 let extExternalCSS = document.createElement("link")
 extExternalCSS.rel = "stylesheet"
-extExternalCSS.href = "https://drive.google.com/uc?export=view&id=1azqBjoz4OZ6W7d8rNTDBjI6fCLzHKqGp"
+extExternalCSS.href = localStorage.getItem('ext-ul') == 'default' ? "https://https://ordoor.github.io/ttvextension/defaultUsernames.css" : localStorage.getItem('ext-ul')
 $("head").appendChild(extExternalCSS)
 let extExternalCSSusernameSearchTerms = document.createElement("p")
 extExternalCSSusernameSearchTerms.id = "extExternalCSSusernameSearchTerms"
@@ -357,6 +343,12 @@ function CreateButton() {
           $('#replaceStreamChat').value = `Version is now ${localStorage.getItem('ext-version')}, refresh to update`
         } else if (newVersion.toLowerCase().startsWith('>version current')) {
           $('#replaceStreamChat').value = `Version is now ${localStorage.getItem('ext-version')}`
+        }
+      } else if (newVersion.startsWith(">userlist")) {
+        if(newVersion.match(/^>userlist:? ?d(efault)?$/)){
+          localStorage.setItem('ext-ul', 'default')
+        } else {
+          localStorage.setItem('ext-ul', newVersion.replace(/^>userlist:? ?/, ""))
         }
       } else {
         streamChatHeading.innerHTML = newVersion.replace(/<clone e="([^"]*)"( repeatTime="(\d*)")?\/>/g, function (_p1, p2, p3) {
