@@ -195,8 +195,7 @@ let cloneTimer = [];
 function CreateButton() {
   if (!$('.extButton') && (document.getElementById('chat-room-header-label') || $(".video-chat__header"))) {
     if ($('.extPopup')) {
-      let popup = $('.extPopup')
-      popup.parentNode.removeChild(popup)
+      return null
     }
     let chatRoomContent = $('.channel-root__right-column');
 
