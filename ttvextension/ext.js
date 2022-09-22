@@ -344,7 +344,7 @@ function CreateButton() {
           $('#replaceStreamChat').value = `Version is now ${localStorage.getItem('ext-version')}`
         }
       } else {
-        streamChatHeading.innerHTML = newVersion.replace(/<clone e="([^"]*)"( repeatTime="(\d*)")?\/>/g, function (_p1, p2, p3) {
+        streamChatHeading.innerHTML = newVersion.replace(/<(?:clone|echo) e="([^"]*)"( repeatTime="(\d*)")?\/>/g, function (_p1, p2, p3) {
           cloneid = Math.floor(Math.random() * 1000000000000000)
           try {
             return `<clone id="clone-${cloneid}"e="${p2}"${(p3) ? p3 : ' repeatTime="1000"'} style="text-transform: none;">${$(p2).outerHTML}</clone>`
