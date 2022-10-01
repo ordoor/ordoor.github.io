@@ -149,17 +149,14 @@ if (chatButton) {
 setInterval(RefreshVideos, 5000)
 setTimeout(RefreshVideos, 4000)
 
-let cloneTimer;
+let cloneTimer = [];
 
 function CreateButton() {
-  if (!$('.extButton') && document.getElementById('chat-room-header-label')) {
+  if (!$('.extButton') && (document.getElementById('chat-room-header-label') || $(".video-chat__header"))) {
     if ($('.extPopup')) {
-      let popup = $('.extPopup')
-      popup.parentNode.removeChild(popup)
+      return null
     }
     let chatRoomContent = $('.channel-root__right-column');
-    let chatTypeAgainText = $('.gwGJSM').childNodes[0];
-    let chatRoomHeaderLabel = document.getElementById('chat-room-header-label');
 
     var extButton = document.createElement("button");
     var extImg = document.createElement("img");
@@ -185,8 +182,11 @@ function CreateButton() {
     extCloseButtonText.innerHTML = "&#x2716;"
     extInfoButton.innerHTML = '<a class="extInfoButtonText" href="https://pastebin.com/aMC52bFU" target="_blank">&#x1F6C8</a>'
     extButton.append(extImg)
-    chatRoomContent.append(extpopup)
-    chatTypeAgainText.insertAdjacentElement("afterend", extButton)
+    chatRoomContent.appendChild(extpopup)
+    try {
+      let chatTypeAgainText = $('.gwGJSM').childNodes[0];
+      chatTypeAgainText?.insertAdjacentElement("afterend", extButton)
+    } catch (error) { }
     extpopup.append(extCloseButton);
     extpopup.append(extInfoButton);
     extCloseButton.append(extCloseButtonText);
@@ -203,6 +203,9 @@ function CreateButton() {
         extpopup.style.visibility = "visible"
         extpopup.style.height = "320px"
         extpopup.style.opacity = "1"
+        setTimeout(function () {
+          $("#replaceStreamChat").focus()
+        }, 200);
         //loads toggle buttons
         $('[data-a-target=user-menu-toggle]').click()
         $('[data-a-target=user-menu-toggle]').click()
@@ -217,13 +220,11 @@ function CreateButton() {
     });
     document.getElementById('headSize').onmousemove = function () {
       document.getElementById('currentHeaderSize').innerHTML = this.value;
-      $('.stream-chat-header')
-      $('.stream-chat-header').style.height = this.value.toString() + "rem";
+      (document.querySelector('.stream-chat-header') ?? document.querySelector("div.Layout-sc-nxg1ff-0.giyKYb.video-chat__header")).style.height = this.value.toString() + "rem";
     }
     document.getElementById('headSize').onchange = function () {
       document.getElementById('currentHeaderSize').innerHTML = this.value;
-      $('.stream-chat-header')
-      $('.stream-chat-header').style.height = this.value.toString() + "rem";
+      (document.querySelector('.stream-chat-header') ?? document.querySelector("div.Layout-sc-nxg1ff-0.giyKYb.video-chat__header")).style.height = this.value.toString() + "rem";
     }
 
     //from options.js
@@ -244,9 +245,9 @@ function CreateButton() {
       input.value = '<ul>\n<li></li>\n<li></li>\n<li></li>\n<li></li>\n<li></li>\n</ul>'
     });
     applySpanColorPreset.addEventListener("click", async () => {
-      if (input.value != "" && input.value != "Stream Chat" && !input.value.startsWith('#useSpanShortcuts')) {
+      if (input.value != "" && input.value != "Stream Chat" && !input.value.startsWith('#uss')) {
         var lines = input.value.split(/\r\n|\n\r|\n|\r|\u007C/);
-        var newInput = "#useSpanShortcuts\n\n\n"
+        var newInput = "#uss\n\n\n"
         for (let i = 0; i < lines.length; i++) {
           newInput += '<span style="color:red; text-transform:none"> ' + lines[i] + ' </span><br>\n'
         }
@@ -263,27 +264,29 @@ function CreateButton() {
     //from popup.js
     let toggleLeaderboard = document.getElementById("toggleLeaderboard");
     apply.addEventListener("click", async () => {
-      let streamChatHeading = document.getElementById("chat-room-header-label");
-      let headerDiv = $('.stream-chat-header');
+      let streamChatHeading = document.getElementById("chat-room-header-label") ? document.getElementById("chat-room-header-label") : $("div.Layout-sc-nxg1ff-0.giyKYb.video-chat__header > span");
+      let headerDiv = $('.stream-chat-header') ? $('.stream-chat-header') : $("div.Layout-sc-nxg1ff-0.giyKYb.video-chat__header");
       let newVersion = document.getElementById("replaceStreamChat").value;
       let headSize = document.getElementById("headSize").value;
-      clearInterval(cloneTimer)
+      $$("clone", streamChatHeading).forEach(cloneele => {
+        cloneele.setAttribute("destroyed", "true")
+      })
 
       if ($('#AllowHTML').checked) {
         if (newVersion.startsWith("#uss")) {
-          var newerVersion = newVersion.replace(/t\(([^)\n]*)\)([^]*)\/t(?![dr])/g, function (p1, p2, p3) {
+        var newerVersion = newVersion.replace(/t\(([^)\n]*)\)([^]*)\/t(?![dr])/g, function (_p1, p2, p3) {
             p2 = p2.replace(/c:/g, 'color:').replace(/tt:/g, 'text-transform:').replace(/: ?n/gi, ': none')
             return `<table style="${p2}">${p3}</table>`
-          }).replace(/tr\(([^)\n]*)\)((?:(?!\/tr)[^])*)\/tr/g, function (p1, p2, p3) {
+        }).replace(/tr\(([^)\n]*)\)((?:(?!\/tr)[^])*)\/tr/g, function (_p1, p2, p3) {
             p2 = p2.replace(/c:/g, 'color:').replace(/tt:/g, 'text-transform:').replace(/: ?n/gi, ': none')
             return `<tr style="${p2}">${p3}</tr>`
-          }).replace(/td\(([^)\n]*)\)((?:(?!\/td)[^])*)\/td/g, function (p1, p2, p3) {
+        }).replace(/td\(([^)\n]*)\)((?:(?!\/td)[^])*)\/td/g, function (_p1, p2, p3) {
             p2 = p2.replace(/c:/g, 'color:').replace(/tt:/g, 'text-transform:').replace(/: ?n/gi, ': none')
             return `<td style="${p2}">${p3}</td>`
-          }).replace(/s\(([^)\n]*)\)([^/]*)\/s/g, function (p1, p2, p3) {
+        }).replace(/s\(([^)\n]*)\)([^/]*)\/s/g, function (_p1, p2, p3) {
             p2 = p2.replace(/c:/g, 'color:').replace(/tt:/g, 'text-transform:').replace(/: ?n/gi, ': none')
             return `<span style="${p2}">${p3}</span>`
-          }).replace(/^#uss/, '').replace(/\\n/g, '<br/>').replace(/<clone e="([\s\S]*)"\/>/g, function(p1, p2){
+        }).replace(/^#uss/, '').replace(/\\n/g, '<br/>').replace(/<clone e="([\s\S]*)"\/>/g, function (_p1, p2) {
             return $(p2).outerHTML
           });
           streamChatHeading.innerHTML = newerVersion
@@ -301,13 +304,14 @@ function CreateButton() {
             $('#replaceStreamChat').value = `Version is now ${localStorage.getItem('ext-version')}`
           }
         } else {
-          streamChatHeading.innerHTML = newVersion.replace(/<clone e="([^"]*)"( repeatTime="(\d*)")?\/>/g, function(p1, p2, p3, p4){
-            if(p4){
-              cloneTimer = setInterval(function(){
-                streamChatHeading.innerHTML = $(p2).outerHTML
-              }, parseInt(p4))
+        streamChatHeading.innerHTML = newVersion.replace(/<(?:clone|echo) e="([^"]*)"( repeatTime="(\d*)")?\/>/g, function (_p1, p2, p3) {
+          cloneid = Math.floor(Math.random() * 1000000000000000)
+          try {
+            return `<clone id="clone-${cloneid}"e="${p2}"${(p3) ? p3 : ' repeatTime="1000"'} style="text-transform: none;">${$(p2).outerHTML}</clone>`
+          } catch (err) {
+            alert(err.message)
             }
-            return $(p2).outerHTML
+
           });
         }
       } else {
@@ -330,8 +334,8 @@ function CreateButton() {
         leaderboardInner.style.height = "0rem"
       }
     });
-    document.getElementById("currentHeaderSize").innerHTML = $('.stream-chat-header').offsetHeight / 10
-    document.getElementById("replaceStreamChat").innerHTML = $('#chat-room-header-label').innerHTML;
+    document.getElementById("currentHeaderSize").innerHTML = $('.stream-chat-header') ? $('.stream-chat-header').offsetHeight / 10 : 5;
+    document.getElementById("replaceStreamChat").innerHTML = $('#chat-room-header-label') ? $('#chat-room-header-label').innerHTML : "Stream Chat"
   } else {
     false
   }
@@ -344,13 +348,13 @@ function ChatEdit() {
     for (let i2 = 0; i2 < usernameSearchTerms.length; i2++) {
       if (allChatMessages[i].innerHTML.toLowerCase() == usernameSearchTerms[i2].Name) {
         allChatMessages[i].classList.add("UsernameIs-" + usernameSearchTerms[i2].Class)
-        ancestorBackup(allChatMessages[i], 3).classList.add("chat-line__username-container-UsernameIs-" + usernameSearchTerms[i2].Class)
-        ancestorBackup(allChatMessages[i], 5).classList.add("chat-line-UsernameIs-" + usernameSearchTerms[i2].Class)
-        if (!ancestorBackup(allChatMessages[i], 3).childNodes[0].innerHTML.includes("Extension Admin") && usernameSearchTerms[i2].BonusBadge == "Verified") {
-          ancestorBackup(allChatMessages[i], 3).childNodes[0].innerHTML += '<div class="InjectLayout-sc-588ddc-0 kUvjun" title="Extension Admin" style="width: 18px; height: 18px"><button data-a-target="chat-badge" aria-describedby="93092e97b1e5f4e17c165ee4d01ad630" control-id="ControlID-626"><img alt="Verified" aria-label="Extension Admin badge" class="chat-badge" src="https://static-cdn.jtvnw.net/badges/v1/d12a2e27-16f6-41d0-ab77-b780518f00a3/1" srcset="https://static-cdn.jtvnw.net/badges/v1/d12a2e27-16f6-41d0-ab77-b780518f00a3/1 1x, https://static-cdn.jtvnw.net/badges/v1/d12a2e27-16f6-41d0-ab77-b780518f00a3/2 2x, https://static-cdn.jtvnw.net/badges/v1/d12a2e27-16f6-41d0-ab77-b780518f00a3/3 4x"></button></div>'
+        ElementAncestor(allChatMessages[i], 3).classList.add("chat-line__username-container-UsernameIs-" + usernameSearchTerms[i2].Class)
+        ElementAncestor(allChatMessages[i], 5).classList.add("chat-line-UsernameIs-" + usernameSearchTerms[i2].Class)
+        if (!ElementAncestor(allChatMessages[i], 3).childNodes[0].innerHTML.includes("Extension Admin") && usernameSearchTerms[i2].BonusBadge == "Verified") {
+          ElementAncestor(allChatMessages[i], 3).childNodes[0].innerHTML += '<div class="InjectLayout-sc-588ddc-0 kUvjun" title="Extension Admin" style="width: 18px; height: 18px"><button data-a-target="chat-badge" aria-describedby="93092e97b1e5f4e17c165ee4d01ad630" control-id="ControlID-626"><img alt="Verified" aria-label="Extension Admin badge" class="chat-badge" src="https://static-cdn.jtvnw.net/badges/v1/d12a2e27-16f6-41d0-ab77-b780518f00a3/1" srcset="https://static-cdn.jtvnw.net/badges/v1/d12a2e27-16f6-41d0-ab77-b780518f00a3/1 1x, https://static-cdn.jtvnw.net/badges/v1/d12a2e27-16f6-41d0-ab77-b780518f00a3/2 2x, https://static-cdn.jtvnw.net/badges/v1/d12a2e27-16f6-41d0-ab77-b780518f00a3/3 4x"></button></div>'
         }
-        if (!ancestorBackup(allChatMessages[i], 3).childNodes[0].innerHTML.includes("Extension Admin") && usernameSearchTerms[i2].BonusBadge == "Admin") {
-          ancestorBackup(allChatMessages[i], 3).childNodes[0].innerHTML += '<div class="InjectLayout-sc-588ddc-0 kUvjun" title="Extension Admin" style="width: 18px; height: 18px"><button data-a-target="chat-badge" aria-describedby="93092e97b1e5f4e17c165ee4d01ad630" control-id="ControlID-626"><img alt="Verified" aria-label="Extension Admin badge" class="chat-badge" src="https://i.imgur.com/RuQgbKi.png" srcset="https://i.imgur.com/RuQgbKi.png 1x, https://i.imgur.com/RuQgbKi.png 2x, https://i.imgur.com/RuQgbKi.png 4x" style="width: 18px; height: 18px"></button></div>'
+        if (!ElementAncestor(allChatMessages[i], 3).childNodes[0].innerHTML.includes("Extension Admin") && usernameSearchTerms[i2].BonusBadge == "Admin") {
+          ElementAncestor(allChatMessages[i], 3).childNodes[0].innerHTML += '<div class="InjectLayout-sc-588ddc-0 kUvjun" title="Extension Admin" style="width: 18px; height: 18px"><button data-a-target="chat-badge" aria-describedby="93092e97b1e5f4e17c165ee4d01ad630" control-id="ControlID-626"><img alt="Verified" aria-label="Extension Admin badge" class="chat-badge" src="https://i.imgur.com/RuQgbKi.png" srcset="https://i.imgur.com/RuQgbKi.png 1x, https://i.imgur.com/RuQgbKi.png 2x, https://i.imgur.com/RuQgbKi.png 4x" style="width: 18px; height: 18px"></button></div>'
         }
       }
       if (displayName) {
@@ -374,29 +378,26 @@ function ChatEdit() {
 function ChatEditLast(var1) {
   let allChatMessages = $$('.chat-author__display-name')
   let displayName = $('.name-display__name')
+  let i0;
   //if (!lastScannedMessage) {
-  let i0 = allChatMessages.length - var1;
+  i0 = allChatMessages.length - var1;
   /*} else {
-    for (let i = allChatMessages.length - var1; i < allChatMessages.length; i++) {
-      if (allChatMessages[i] && lastScannedMessage) {
-        if (allChatMessages[i].parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.innerHTML == lastScannedMessage.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.innerHTML) {
-          i0 = i;
-        }
-      }
-    
+    i0 = Array.from($('ul, .chat-scrollable-area__message-container').childNodes).findIndex(function (item) {
+      return item == lastScannedMessage
+    })
   }*/
   for (let i = i0; i < allChatMessages.length; i++) {
     for (let i2 = 0; i2 < usernameSearchTerms.length; i2++) {
       if (allChatMessages[i]) {
         if (allChatMessages[i].innerHTML.toLowerCase() == usernameSearchTerms[i2].Name) {
           allChatMessages[i].classList.add("UsernameIs-" + usernameSearchTerms[i2].Class)
-          ancestorBackup(allChatMessages[i], 3).classList.add("chat-line__username-container-UsernameIs-" + usernameSearchTerms[i2].Class)
-          ancestorBackup(allChatMessages[i], 5).classList.add("chat-line-UsernameIs-" + usernameSearchTerms[i2].Class)
-          if (!ancestorBackup(allChatMessages[i], 3).childNodes[0].innerHTML.includes("Extension Admin") && usernameSearchTerms[i2].BonusBadge == "Verified") {
-            ancestorBackup(allChatMessages[i], 3).childNodes[0].innerHTML += '<div class="InjectLayout-sc-588ddc-0 kUvjun" title="Extension Admin" style="width: 18px; height: 18px"><button data-a-target="chat-badge" aria-describedby="93092e97b1e5f4e17c165ee4d01ad630" control-id="ControlID-626"><img alt="Verified" aria-label="Extension Admin badge" class="chat-badge" src="https://static-cdn.jtvnw.net/badges/v1/d12a2e27-16f6-41d0-ab77-b780518f00a3/1" srcset="https://static-cdn.jtvnw.net/badges/v1/d12a2e27-16f6-41d0-ab77-b780518f00a3/1 1x, https://static-cdn.jtvnw.net/badges/v1/d12a2e27-16f6-41d0-ab77-b780518f00a3/2 2x, https://static-cdn.jtvnw.net/badges/v1/d12a2e27-16f6-41d0-ab77-b780518f00a3/3 4x"></button></div>'
+          ElementAncestor(allChatMessages[i], 3).classList.add("chat-line__username-container-UsernameIs-" + usernameSearchTerms[i2].Class)
+          ElementAncestor(allChatMessages[i], 5).classList.add("chat-line-UsernameIs-" + usernameSearchTerms[i2].Class)
+          if (!ElementAncestor(allChatMessages[i], 3).childNodes[0].innerHTML.includes("Extension Admin") && usernameSearchTerms[i2].BonusBadge == "Verified") {
+            ElementAncestor(allChatMessages[i], 3).childNodes[0].innerHTML += '<div class="InjectLayout-sc-588ddc-0 kUvjun" title="Extension Admin" style="width: 18px; height: 18px"><button data-a-target="chat-badge" aria-describedby="93092e97b1e5f4e17c165ee4d01ad630" control-id="ControlID-626"><img alt="Verified" aria-label="Extension Admin badge" class="chat-badge" src="https://static-cdn.jtvnw.net/badges/v1/d12a2e27-16f6-41d0-ab77-b780518f00a3/1" srcset="https://static-cdn.jtvnw.net/badges/v1/d12a2e27-16f6-41d0-ab77-b780518f00a3/1 1x, https://static-cdn.jtvnw.net/badges/v1/d12a2e27-16f6-41d0-ab77-b780518f00a3/2 2x, https://static-cdn.jtvnw.net/badges/v1/d12a2e27-16f6-41d0-ab77-b780518f00a3/3 4x"></button></div>'
           }
-          if (!ancestorBackup(allChatMessages[i], 3).childNodes[0].innerHTML.includes("Extension Admin") && usernameSearchTerms[i2].BonusBadge == "Admin") {
-            ancestorBackup(allChatMessages[i], 3).childNodes[0].innerHTML += '<div class="InjectLayout-sc-588ddc-0 kUvjun" title="Extension Admin" style="width: 18px; height: 18px"><button data-a-target="chat-badge" aria-describedby="93092e97b1e5f4e17c165ee4d01ad630" control-id="ControlID-626"><img alt="Verified" aria-label="Extension Admin badge" class="chat-badge" src="https://i.imgur.com/RuQgbKi.png" srcset="https://i.imgur.com/RuQgbKi.png 1x, https://i.imgur.com/RuQgbKi.png 2x, https://i.imgur.com/RuQgbKi.png 4x" style="width: 18px; height: 18px"></button></div>'
+          if (!ElementAncestor(allChatMessages[i], 3).childNodes[0].innerHTML.includes("Extension Admin") && usernameSearchTerms[i2].BonusBadge == "Admin") {
+            ElementAncestor(allChatMessages[i], 3).childNodes[0].innerHTML += '<div class="InjectLayout-sc-588ddc-0 kUvjun" title="Extension Admin" style="width: 18px; height: 18px"><button data-a-target="chat-badge" aria-describedby="93092e97b1e5f4e17c165ee4d01ad630" control-id="ControlID-626"><img alt="Verified" aria-label="Extension Admin badge" class="chat-badge" src="https://i.imgur.com/RuQgbKi.png" srcset="https://i.imgur.com/RuQgbKi.png 1x, https://i.imgur.com/RuQgbKi.png 2x, https://i.imgur.com/RuQgbKi.png 4x" style="width: 18px; height: 18px"></button></div>'
           }
         }
         if (displayName) {
@@ -478,47 +479,136 @@ function RemoveLeaderboardOnLinkClick() {
     });
   }
 }
+class Time {
+  constructor(hours, minutes, seconds) {
+    this.hours = hours;
+    this.minutes = minutes;
+    this.seconds = seconds;
+  }
+  get asSeconds() {
+    return (this.hours * 3600) + (this.minutes * 60) + this.seconds
+  }
+  static fromString(string, splitter = ":") {
+    let stringSplit = string.split(splitter).map(x => parseInt(x))
+    return new this(stringSplit[0], stringSplit[1], stringSplit[2])
+  }
+}
 let resetVid = true;
 function RefreshVideos() {
   let currentTimeEle = $('[data-a-target=player-seekbar-current-time]')
   let videoDurationEle = $('[data-a-target=player-seekbar-duration]')
-  if (location.href.match(/twitch.tv\/videos\//) && currentTimeEle && videoDurationEle && $('.hMomhv') && $('.ldTlWe')) {
-    let isLiveNow = $('.hMomhv').firstChild.firstChild.lastChild.innerText
-    let videoDuration = videoDurationEle?.innerText.split(":")
-    let currentTime = currentTimeEle?.innerText.split(":")
-    let timeRemaining = ((parseInt(videoDuration[0]) * 3600) + (parseInt(videoDuration[1]) * 60) + parseInt(videoDuration[2])) - ((parseInt(currentTime[0]) * 3600) + (parseInt(currentTime[1]) * 60) + parseInt(currentTime[2]));
-    if (location.href.match(/twitch.tv\/videos\//) && currentTimeEle && isLiveNow == 'streaming live now' && $('[data-a-target=tw-input]').value.toLowerCase() != '#vrfd' /*Video Refresh Function Disable*/ && ($('.ldTlWe').innerText.match(/sec|min|hour/gi) || (videoDuration[0] >= 18 && $('.ldTlWe').innerText.match(/sec|min|hour|yesterday|2 day/gi))) && timeRemaining < 120 && videoDurationEle.innerText != '00:00:00' && resetVid) {
+  if (location.href.match(/twitch.tv\/videos\//) && currentTimeEle && videoDurationEle) {
+    let isLiveNow = $('div.cdkvSQ > div:nth-child(2)').innerText
+    let videoDuration = videoDurationEle?.innerText
+    let currentTime = currentTimeEle?.innerText
+    let timeRemaining = Time.fromString(videoDuration).asSeconds - Time.fromString(currentTime).asSeconds
+    if (location.href.match(/twitch.tv\/videos\//) && currentTimeEle && isLiveNow == 'streaming live now' && $('[data-a-target=tw-input]').value.toLowerCase() != '#vrfd' /*Video Refresh Function Disable*/ && (isLiveNow.match(/sec|min|hour/gi) || (videoDuration[0] >= 18 && isLiveNow.match(/sec|min|hour|yesterday|2 day/gi))) && timeRemaining < 120 && videoDurationEle.innerText != '00:00:00' && resetVid) {
       resetVid = confirm('Reset video?')
       if (resetVid) {
-        if (location.href.match(/\?t=[0-9]{2}h[0-9]{2}m[0-9]{2}/)) {
-          location.href = location.href.replace(/\?t=[0-9]{2}h[0-9]{2}m[0-9]{2}/, '?t=' + currentTimeEle.innerText.replace(':', 'h').replace(':', 'm'))
-        } else {
-          location.href += '?t=' + currentTimeEle.innerText.replace(':', 'h').replace(':', 'm') + 's'
+        location.search = '?t=' + currentTimeEle.innerText.replace(':', 'h').replace(':', 'm') + 's'
         }
       }
     }
   }
-}
+//Open emotes on Double RShift typed
 function RShiftEmote(e) {
   if (e.code == "ShiftRight") {
     if (document.querySelector('.bttv-LegacyButton-module__button-zNnkm')) {
       document.querySelector('.bttv-LegacyButton-module__button-zNnkm').click()
+      $('.bttv-rs-input').focus()
     } else {
       document.querySelector('[data-a-target=emote-picker-button]')?.click()
     }
+    $("[data-a-target=chat-input]").focus()
     document.removeEventListener('keyup', RShiftEmote)
   }
 }
-//Open emotes on Double RShift typed
 document.addEventListener('load', document.addEventListener('keyup', function (e) {
   if (e.code == "ShiftRight") {
     document.addEventListener('keyup', RShiftEmote)
     setTimeout(function () { document.removeEventListener('keyup', RShiftEmote) }, 2500)
   }
 }))
+//Open Ext menu on RCtrl
+function RControlM(e) {
+  if (e.code == "ControlRight") {
+    extpopup = $(".extPopup")
+    if (extpopup.style.visibility == "visible") {
+      extpopup.style.height = "0px"
+      extpopup.style.opacity = "0"
+      setTimeout(function () {
+        extpopup.style.visibility = "hidden"
+        $("[data-a-target=chat-input]").focus()
+      }, 200);
+    } else {
+      extpopup.style.visibility = "visible"
+      extpopup.style.height = "320px"
+      extpopup.style.opacity = "1"
+      setTimeout(function () {
+        $("#replaceStreamChat").focus()
+      }, 200);
+      CreateButton()
+    }
+    document.removeEventListener('keyup', RControlM)
+  }
+}
+document.addEventListener('load', document.addEventListener('keyup', function (e) {
+  if (e.code == "ControlRight") {
+    document.addEventListener('keyup', RControlM)
+    setTimeout(function () { document.removeEventListener('keyup', RControlM) }, 2500)
+  }
+}))
+//skip 15 seconds on click of skip 15
+try {
+  $('#skip15p').addEventListener('click', function () {
+    $('video').currentTime += 15;
+  })
+} catch (error) {
+  setTimeout(function () {
+    $('#skip15p').addEventListener('click', function () {
+      $('video').currentTime += 15;
+    })
+  }, 5000)
+}
+
 /*setInterval(Countdown, 3000)
 function Countdown() {
     if (document.querySelector(".live-time").innerHTML.startsWith("0:55")) {
         alert("5 min")
     }
 }*/
+function clearingSetInterval(f, t) {
+  var self =
+    setInterval(
+      function () {
+        let result = f(self)
+        if (result?.match ? +result?.match(/\d*/) >= 200 && +result?.match(/\d*/) < 300 : +result >= 200 && +result < 300) {
+          clearInterval(self)
+        };
+      },
+      t
+    )
+}
+$("#apply").addEventListener("click", function () {
+  $$("clone").forEach(cloneele => {
+    if (!cloneele.attributes.repeating?.nodeValue) {
+      clearingSetInterval(function (self) {
+        try {
+          if (!cloneele.attributes.destroyed) {
+            try {
+              cloneele.innerHTML = $(cloneele.attributes.e.nodeValue).outerHTML
+            } catch (err) {
+              alert(err.message)
+            }
+            cloneele.setAttribute("repeating", self);
+          } else {
+            clearInterval(self)
+          }
+        } catch (err) {
+          clearInterval(self)
+        }
+      }, (cloneele.attributes.repeatTime.nodeValue) ? parseInt(cloneele.attributes.repeatTime.nodeValue) : 1000)
+    }
+  })
+})
+

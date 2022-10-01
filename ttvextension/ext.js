@@ -567,6 +567,7 @@ function RShiftEmote(e) {
   if (e.code == "ShiftRight") {
     if (document.querySelector('.bttv-LegacyButton-module__button-zNnkm')) {
       document.querySelector('.bttv-LegacyButton-module__button-zNnkm').click()
+      $('.bttv-rs-input').focus()
     } else {
       document.querySelector('[data-a-target=emote-picker-button]')?.click()
     }
