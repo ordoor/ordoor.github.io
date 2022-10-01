@@ -1,5 +1,33 @@
+function randomgen(first, max, repetitions) {
+  let minimum;
+  let maximum;
+  if (max) {
+    minimum = first;
+    maximum = max;
+  } else if (first) {
+    minimum = 1;
+    maximum = first;
+  }
+  if (repetitions) {
+    spread = Array(maximum + 1).fill(0)
+    outputN = []
+    for (let i = 0; i < repetitions; i++) {
+      n = Math.floor(Math.random() * (maximum - minimum + 1) + minimum)
+      output.push(n)
+      spread[n]++
+    }
+    sorted = output.sort((a, b) => a - b);
+    return {
+      spread,
+      sorted,
+      output,
+    }
+  } else {
+    return Math.floor(Math.random() * maximum + minimum)
+  }
+}
 function $(querySelector, parent = document) {
-  if(typeof querySelector == "function"){
+  if (typeof querySelector == "function") {
     document.addEventListener("load", querySelector)
   }
   else return parent.querySelector(querySelector)
@@ -7,7 +35,7 @@ function $(querySelector, parent = document) {
 function $$(querySelectorAll, parent = document) {
   return parent.querySelectorAll(querySelectorAll)
 }
-Element.prototype.ancestor = function ancestor(numbUp) {
+Element.prototype.ancestor = function(numbUp) {
   ele = this
   for (let i = 0; i < numbUp; i++) {
     ele = ele.parentNode
@@ -49,20 +77,6 @@ let usernameSearchTerms = [
   { Name: "ironmouse", Class: "GenericImportant" },
   { Name: "btdisab", Class: "GenericImportant" },*/
 ]
-let customCommands = [
-  { from: /\/n/gi, to: '<br>' },
-  { from1: /\#useSpanShortcuts/, to: '' },
-  { from: /s\//gi, to: '<span style="/nextVal/' },
-  { from: /\/nextVal\/c:/gi, to: 'color: ' },
-  { from: /\; c:/gi, to: '; color: ' },
-  { from: /\/nextVal\/tt=n/gi, to: '; text-transform:none' },
-  { from: /\/nextVal\/tt=/gi, to: '; text-transform:' },
-  { from: /\; tt=n/gi, to: '; text-transform:none' },
-  { from: /\; tt=/gi, to: '; text-transform:' },
-  { from: /\;\//gi, to: '">' },
-  { from: /\/s/gi, to: '</span>' },
-  { from: /#n/gi, to: '<br>' },
-];
 let extOptionsHTMLpre = `
   <div>
     <div class="presetShortcuts">
@@ -179,10 +193,9 @@ setTimeout(RefreshVideos, 4000)
 let cloneTimer = [];
 
 function CreateButton() {
-  if (!$('.extButton') && !$('.extPopup') && (document.getElementById('chat-room-header-label') || $(".video-chat__header"))) {
+  if (!$('.extButton') && (document.getElementById('chat-room-header-label') || $(".video-chat__header"))) {
     if ($('.extPopup')) {
-      let popup = $('.extPopup')
-      popup.parentNode.removeChild(popup)
+      return null
     }
     let chatRoomContent = $('.channel-root__right-column');
     let chatRoomHeaderLabel = document.getElementById('chat-room-header-label');
@@ -232,6 +245,9 @@ function CreateButton() {
         extpopup.style.visibility = "visible"
         extpopup.style.height = "320px"
         extpopup.style.opacity = "1"
+        setTimeout(function () {
+          $("#replaceStreamChat").focus()
+        }, 200);
       }
     });
     extCloseButton.addEventListener("click", async () => {
@@ -299,19 +315,19 @@ function CreateButton() {
       })
 
       if (newVersion.startsWith("#uss")) {
-        var newerVersion = newVersion.replace(/t\(([^)\n]*)\)([^]*)\/t(?![dr])/g, function (p1, p2, p3) {
+        var newerVersion = newVersion.replace(/t\(([^)\n]*)\)([^]*)\/t(?![dr])/g, function (_p1, p2, p3) {
           p2 = p2.replace(/c:/g, 'color:').replace(/tt:/g, 'text-transform:').replace(/: ?n/gi, ': none')
           return `<table style="${p2}">${p3}</table>`
-        }).replace(/tr\(([^)\n]*)\)((?:(?!\/tr)[^])*)\/tr/g, function (p1, p2, p3) {
+        }).replace(/tr\(([^)\n]*)\)((?:(?!\/tr)[^])*)\/tr/g, function (_p1, p2, p3) {
           p2 = p2.replace(/c:/g, 'color:').replace(/tt:/g, 'text-transform:').replace(/: ?n/gi, ': none')
           return `<tr style="${p2}">${p3}</tr>`
-        }).replace(/td\(([^)\n]*)\)((?:(?!\/td)[^])*)\/td/g, function (p1, p2, p3) {
+        }).replace(/td\(([^)\n]*)\)((?:(?!\/td)[^])*)\/td/g, function (_p1, p2, p3) {
           p2 = p2.replace(/c:/g, 'color:').replace(/tt:/g, 'text-transform:').replace(/: ?n/gi, ': none')
           return `<td style="${p2}">${p3}</td>`
-        }).replace(/s\(([^)\n]*)\)([^/]*)\/s/g, function (p1, p2, p3) {
+        }).replace(/s\(([^)\n]*)\)([^/]*)\/s/g, function (_p1, p2, p3) {
           p2 = p2.replace(/c:/g, 'color:').replace(/tt:/g, 'text-transform:').replace(/: ?n/gi, ': none')
           return `<span style="${p2}">${p3}</span>`
-        }).replace(/^#uss/, '').replace(/\\n/g, '<br/>').replace(/<clone e="([\s\S]*)"\/>/g, function (p1, p2) {
+        }).replace(/^#uss/, '').replace(/\\n/g, '<br/>').replace(/<clone e="([\s\S]*)"\/>/g, function (_p1, p2) {
           return $(p2).outerHTML
         });
         streamChatHeading.innerHTML = newerVersion
@@ -329,7 +345,7 @@ function CreateButton() {
           $('#replaceStreamChat').value = `Version is now ${localStorage.getItem('ext-version')}`
         }
       } else {
-        streamChatHeading.innerHTML = newVersion.replace(/<clone e="([^"]*)"( repeatTime="(\d*)")?\/>/g, function (p1, p2, p3, p4) {
+        streamChatHeading.innerHTML = newVersion.replace(/<(?:clone|echo) e="([^"]*)"( repeatTime="(\d*)")?\/>/g, function (_p1, p2, p3) {
           cloneid = Math.floor(Math.random() * 1000000000000000)
           try {
             return `<clone id="clone-${cloneid}"e="${p2}"${(p3) ? p3 : ' repeatTime="1000"'} style="text-transform: none;">${$(p2).outerHTML}</clone>`
@@ -547,6 +563,7 @@ function RefreshVideos() {
     }
   }
 }
+//Open emotes on Double RShift typed
 function RShiftEmote(e) {
   if (e.code == "ShiftRight") {
     if (document.querySelector('.bttv-LegacyButton-module__button-zNnkm')) {
@@ -554,10 +571,10 @@ function RShiftEmote(e) {
     } else {
       document.querySelector('[data-a-target=emote-picker-button]')?.click()
     }
+    $("[data-a-target=chat-input]").focus()
     document.removeEventListener('keyup', RShiftEmote)
   }
 }
-//Open emotes on Double RShift typed
 document.addEventListener('load', document.addEventListener('keyup', function (e) {
   if (e.code == "ShiftRight") {
     document.addEventListener('keyup', RShiftEmote)
@@ -573,11 +590,16 @@ function RControlM(e) {
       extpopup.style.opacity = "0"
       setTimeout(function () {
         extpopup.style.visibility = "hidden"
+        $("[data-a-target=chat-input]").focus()
       }, 200);
     } else {
       extpopup.style.visibility = "visible"
       extpopup.style.height = "320px"
       extpopup.style.opacity = "1"
+      setTimeout(function () {
+        $("#replaceStreamChat").focus()
+      }, 200);
+      CreateButton()
     }
     document.removeEventListener('keyup', RControlM)
   }
@@ -612,7 +634,7 @@ function clearingSetInterval(f, t) {
     setInterval(
       function () {
         let result = f(self)
-        if(result?.match ? +result?.match(/\d*/) >= 200 && +result?.match(/\d*/) < 300: +result >= 200 && +result < 300){
+        if (result?.match ? +result?.match(/\d*/) >= 200 && +result?.match(/\d*/) < 300 : +result >= 200 && +result < 300) {
             clearInterval(self)
         };
       },
