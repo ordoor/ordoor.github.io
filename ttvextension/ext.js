@@ -105,7 +105,7 @@ let extOptionsHTMLpre = `
 
 let extExternalCSS = document.createElement("link")
 extExternalCSS.rel = "stylesheet"
-extExternalCSS.href = "https://https://ordoor.github.io/ttvextension/extendedusernames.css"
+extExternalCSS.href = "https://ordoor.github.io/ttvextension/extendedusernames.css"
 $("head").appendChild(extExternalCSS)
 let extExternalCSSusernameSearchTerms = document.createElement("p")
 extExternalCSSusernameSearchTerms.id = "extExternalCSSusernameSearchTerms"
