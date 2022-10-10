@@ -612,12 +612,12 @@ document.addEventListener('load', document.addEventListener('keyup', function (e
 }))
 //skip 15 seconds on click of skip 15
 try {
-  $('#skip15p').addEventListener('click', function () {
+  $('#skip15p')?.addEventListener('click', function () {
     $('video').currentTime += 15;
   })
 } catch (error) {
   setTimeout(function () {
-    $('#skip15p').addEventListener('click', function () {
+    $('#skip15p')?.addEventListener('click', function () {
       $('video').currentTime += 15;
     })
   }, 5000)
