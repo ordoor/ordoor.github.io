@@ -544,6 +544,13 @@ class Time {
     let stringSplit = string.split(splitter).map(x => parseInt(x))
     return new this(stringSplit[0], stringSplit[1], stringSplit[2])
   }
+  static fromint(int){
+    return new Time(Math.floor(int/ 3600), Math.floor(int%3600/60), Math.floor(int%3600%60))
+  }
+  get asTime(){
+    let int = this.asSeconds
+    return '' + Math.floor(int/ 3600) + ':' + (Math.floor(int%3600/60).toString().length == 1? '0' + Math.floor(int%3600/60) : Math.floor(int%3600/60)) + ':' + (Math.floor(int%3600%60).toString().length == 1? '0' + Math.floor(int%3600%60) : Math.floor(int%3600%60))
+  }
 }
 let resetVid = true;
 function RefreshVideos() {
