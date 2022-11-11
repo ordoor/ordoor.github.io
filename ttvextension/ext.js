@@ -10,7 +10,7 @@ function randomgen(first, max, repetitions) {
   }
   if (repetitions) {
     spread = Array(maximum + 1).fill(0)
-    outputN = []
+    output = []
     for (let i = 0; i < repetitions; i++) {
       n = Math.floor(Math.random() * (maximum - minimum + 1) + minimum)
       output.push(n)
