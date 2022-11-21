@@ -358,8 +358,8 @@ function CreateButton() {
       document.getElementById("currentHeaderSize").innerText = headSize.toString()
     });
     toggleLeaderboard.addEventListener("click", async () => {
-      let leaderboard = $('.channel-leaderboard');
-      let leaderboardInner = $('.channel-leaderboard-header-rotating');
+      let leaderboard = $('.channel-leaderboard, .channel-leaderboard-marquee');
+      let leaderboardInner = $('.channel-leaderboard-header-rotating, .channel-leaderboard-header-marquee-rotating');
       if (leaderboard.style.visibility == "hidden") {
         leaderboard.style.visibility = "visible"
         leaderboard.style.height = "7rem"
