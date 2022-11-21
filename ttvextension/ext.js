@@ -225,7 +225,7 @@ function CreateButton() {
     extButton.append(extImg)
     chatRoomContent.appendChild(extpopup)
     try {
-      let chatTypeAgainText = $('.gwGJSM').childNodes[0];
+      let chatTypeAgainText = $('.chat-input__buttons-container>:nth-child(2)').childNodes[0];
       chatTypeAgainText?.insertAdjacentElement("afterend", extButton)
     } catch (error) { }
     extpopup.append(extCloseButton);
@@ -648,7 +648,7 @@ function clearingSetInterval(f, t) {
       t
     )
 }
-$("#apply").addEventListener("click", function () {
+$("#apply")?.addEventListener("click", function () {
   $$("clone").forEach(cloneele => {
     if (!cloneele.attributes.repeating?.nodeValue) {
       clearingSetInterval(function (self) {
