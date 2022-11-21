@@ -498,8 +498,8 @@ function CustomCommands2F() {
   }
 }*/
 function RemoveLeaderboardOn() {
-  let leaderboard = $('.channel-leaderboard');
-  let leaderboardInner = $('.channel-leaderboard-header-rotating');
+  let leaderboard = $('.channel-leaderboard, .channel-leaderboard-marquee');
+      let leaderboardInner = $('.channel-leaderboard-header-rotating, .channel-leaderboard-header-marquee-rotating');
   if (leaderboard && HasRemoveLeaderboardOnActivated == false) {
     leaderboard.style.visibility = "hidden"
     leaderboard.style.height = "0rem"
