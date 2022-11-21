@@ -227,7 +227,7 @@ function CreateButton() {
     try {
       let chatTypeAgainText = $('.chat-input__buttons-container>:nth-child(2)').childNodes[0];
       chatTypeAgainText?.insertAdjacentElement("afterend", extButton)
-    } catch (error) { }
+    } catch (error) { throw(error) }
     extpopup.append(extCloseButton);
     extpopup.append(extInfoButton);
     extCloseButton.append(extCloseButtonText);
