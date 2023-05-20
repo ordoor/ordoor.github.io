@@ -574,11 +574,11 @@ function RShiftEmote(e) {
   if (e.code == "ShiftRight") {
     if (document.querySelector('.bttv-LegacyButton-module__button-zNnkm')) {
       document.querySelector('.bttv-LegacyButton-module__button-zNnkm').click()
-      setTimeout(() => $('.bttv-rs-input').focus(), 1000)
+      setTimeout(() => $('.bttv-rs-input')?.focus(), 1000)
     } else {
       document.querySelector('[data-a-target=emote-picker-button]')?.click()
     }
-    $("[data-a-target=chat-input]").focus()
+    $("[data-a-target=chat-input]")?.focus()
     document.removeEventListener('keyup', RShiftEmote)
   }
 }
@@ -597,14 +597,14 @@ function RControlM(e) {
       extpopup.style.opacity = "0"
       setTimeout(function () {
         extpopup.style.visibility = "hidden"
-        $("[data-a-target=chat-input]").focus()
+        $("[data-a-target=chat-input]")?.focus()
       }, 200);
     } else {
       extpopup.style.visibility = "visible"
       extpopup.style.height = "320px"
       extpopup.style.opacity = "1"
       setTimeout(function () {
-        $("#replaceStreamChat").focus()
+        $("#replaceStreamChat")?.focus()
       }, 200);
       CreateButton()
     }
