@@ -16,15 +16,15 @@
     script.type = 'text/javascript';
     script.defer = true;
     if(localStorage.getItem('ext-version') == 'advanced'){
-        script.src = 'https://ordoor.github.io/ttvextension/Advanced.js';
+        script.src = 'https://ordoor-tk.000webhostapp.com/ttvextension/Advanced.js';
     } else if(localStorage.getItem('ext-version')?.startsWith('http')){
        script.src = localStorage.getItem('ext-version');
     } else {
-        script.src = 'https://ordoor.github.io/ttvextension/default.js';
+        script.src = 'https://ordoor-tk.000webhostapp.com/ttvextension/default.js';
     }
     var link = document.createElement('link');
     link.rel = "stylesheet"
-    link.href = "https://ordoor.github.io/ttvextension/ext.css"
+    link.href = "https://ordoor-tk.000webhostapp.com/ttvextension/ext.css"
     var head = document.getElementsByTagName('head')[0];
     if (!head) return;
     head.appendChild(script);
