@@ -191,10 +191,11 @@ try {
 
     // Export data as a JSON string, including settings and box data
     function exportData() {
+        console.log(boxes)
         const boxData: any = {};
 
         for (let i = 0; i < boxes.length; i++) {
-            const key = `box-${i + 1}`;
+            const key = `box-${i}`;
             const item = localStorage.getItem(key);
 
             if (item !== null) {
