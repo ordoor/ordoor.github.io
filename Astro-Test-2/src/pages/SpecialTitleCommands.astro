@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            color: white;
+            background-color: black;
+        }
+    </style>
+    <title>Document</title>
+</head>
+<body>
+    <h1>Special Title Commands</h1>
+    <h2>Title matches: /\*(?:(\d+)d)?(\d+)?:(\d+)?(?::(\d+))?(?:\.(\d+))?\*/</h2>
+    <p>Sets the amount of time necessary for a box to become highlighted. Goes like DAYSdHOURS:MINS:SECS.MILSEC. Only the ":" between hours and minutes are necessary.</p>
+    <h2>Title is exactly (case <u>sensitive</u>): "Default"</h2>
+    <p>If no boxes are currently highlighted, this box is the box that will be selected for Greater Box</p>
+    <h2>Title contains (case insensitive): "*COPY*"</h2>
+    <p>Copies all of the box's information and converts it into JSON.</p>
+    <h2>Title contains (case insensitive): "*PASTE*" or Title is exactly ".p"</h2>
+    <p>Takes JSON from the data field and puts all its information into the box.</p>
+    <h2>Title is exactly (case <u>sensitive</u>): "*NIL*" or "NIL" or "*NULL*" or "NULL"</h2>
+    <p>Treats the title as if it was "" when updating</p>
+    <h2>Title is exactly (case <u>sensitive</u>): "*CLEAR*" or "CLEAR" or "*RESET*" or "RESET"</h2>
+    <p>Sets all the box's to its default, all values become ""</p>
+    <h2>Title contains (case insensitive): *PAUSE*</h2>
+    <p>This box will not be updated</p>
+
+    <h1>Data Line Commands</h1>
+    <h2>Data Line contains, anywhere on the line (case <u>sensitive</u>): "*Infinity*"</h2>
+    <p>This line's date will be equivalent to this site's Maximum Calculatetable Date, one milliseconds less than 31 days, measured when the page first starts.</p>
+    <h2>Data Line contains, anywhere on the line (case <u>sensitive</u>): "*-Infinity*"</h2>
+    <p>This line's date will be equivalent to the Minimum ECMA-262 Date, -100,000,000 days relative to midnight January 1, 1970 UTC (ECMAScript epoch or UNIX epoch).</p>
+    <h2>Use "//" and "/* */" for comments</h2>
+    <p>Comments should be the same as normal javascript comments</p>
+    <h2>Data Line matches, anywhere in data (case <u>sensitive</u>): /\*now(([+-])(\d+)([smhd]))?\*/</h2>
+    <p>Is automaticaly replaced with a date relative to the current date. For example "*now*" = current date, "*now+5s*" = current date + 5 seconds</p>
+    <ul>
+        <li>s = seconds</li>
+        <li>m = minutes</li>
+        <li>h = hours</li>
+        <li>d = days</li>
+    </ul>
+    <h2>Data Line's first match, (case <u>sensitive</u>): /\*dis(?:play)? ?\((.*?)\)\*/</h2>
+    <p>Defines exactly what a line's next up data will be</p>
+
+    <h1>Data Line & TitleCommands</h1>
+    <h2>Data Line contains, anywhere on the line or Title contains(case insensitive): "*ALARM*"</h2>
+    <p>An alarm will play after this date elapses</p>
+    <h2>Data Line matches, anywhere on the line or Title matches(case <u>sensitive</u>): /*(h-dow|sh3-dow|h-date|h-d)*/</h2>
+    <ul>
+        <li>h-dow: Hides Day of Week</li>
+        <li>sh3-dow: Shortens Day of Week to 3 letters</li>
+        <li>h-date: Hides Date</li>
+        <li>h-d: Hides Date and Day of Week</li>
+    </ul>
+</body>
+</html>
