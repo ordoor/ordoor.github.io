@@ -1,0 +1,191 @@
+html, body {
+  min-height: 100%;
+  height: 100%;
+  max-height: 1000%;
+  margin: 0;
+  overflow-y: auto;
+}
+:root {
+  --column-color: hsl(263, 100%, 40%)
+}
+body {
+  /* background-color: black; */
+  background-image: url("../img/Space_parallax.png"); 
+  color: whitesmoke;
+  font-family: Verdana;
+}
+
+.main-div {
+  display: flex;
+  width: 50%;
+  margin: auto;
+  flex-direction: column;
+}
+
+.buffer-logo {
+  height: 100px;
+  width: 100%;
+}
+
+.navigation {
+  display: flex;
+  width: auto;
+  justify-content: space-evenly;
+  flex-wrap: wrap;
+  padding: 0.5em;
+  margin: 0px;
+  background-color: rgba(153, 50, 204, 0.7);
+  position: sticky;
+  top: 0px;
+  z-index: 1000;
+}
+.navigation > a {
+  text-decoration: none;
+}
+.navigation > a:hover {
+  text-decoration: underline;
+}
+
+.main-site {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-around;
+}
+
+.main-site>div {
+  margin: 5px;
+  padding: 7px;
+}
+
+.l_column {
+  flex: 1;
+  background-color: var(--column-color);
+}
+
+.m_column {
+  flex: 2;
+  background-color: var(--column-color);
+}
+
+.m_column_big {
+  flex: 3;
+  background-color: var(--column-color);
+}
+
+.r_column {
+  flex: 1;
+  background-color: var(--column-color);
+}
+
+a {
+  color: orange !important;
+}
+
+a:hover {
+  color: tomato;
+}
+
+.navigation>a {
+  font-weight: bold;
+  margin: 0px 20px;
+}
+
+.audio-div {
+  position: fixed;
+  bottom: 0px;
+  right: 0px;
+  width: 300px;
+  height: 70px;
+  background-color: #FFF;
+  font-size: smaller;
+}
+
+iframe.audio_iframe {
+  position: fixed;
+  bottom: 0px;
+  right: 0px;
+  width: 300px;
+  height: 70px;
+}
+
+#audio-play {
+  position: absolute;
+  left: 5px;
+  top: 5px;
+  color: black;
+  height: 40px;
+  width: 40px;
+  border-radius: 999px;
+  background: none;
+  box-shadow: inset 0 0 4px #c8c8c8, 0 0 8px #c8c8c8;
+  border: 1px solid #b4b4b4;
+}
+#audio-play:hover {
+  color: blue;
+}
+#audio-play.clicked {
+  color: white;
+  background-color: blue;
+}
+#audio-play.playing::before {
+	content: "=";
+	transform: rotate(90deg);
+	font-size: 34px;
+	font-weight: bold;
+	left: 7.5px;
+	top: -2px;
+}
+#audio-play::before {
+  content: "◀︎";
+  position: absolute;
+  pointer-events: none;
+  left: 11px;
+  top: 6px;
+  font-size: 20px;
+  transform: rotate(180deg);
+}
+.audio-div > img {
+	position: absolute;
+	top: 13px;
+	left: 60px;
+	height: 24px;
+	width: 24px;
+	opacity: 0.8;
+}
+.audio-div > input {
+	position: absolute;
+	top: 14px;
+	right: 10px;
+	width: 58%;
+}
+.audio-div > div {
+  bottom: 0;
+  position: absolute;
+  color: black;
+}
+.audio-div > audio {
+  display: none;
+}
+.column {
+  display: flex;
+  justify-content: space-evenly;
+  flex-direction: column;
+  background-color: initial;
+}
+.column div {
+  margin-bottom: 0.5em;
+  background-color: hsl(263, 100%, 45%);
+}
+.hidden {
+  display: none;
+}
+.box {
+	background-color: rgb(15, 7, 36);
+  border: 2px solid rgb(153, 50, 204);
+  border-radius: 10px;
+  font-family: "Courier New", "Courier New", monospace;
+}
+#changelog > p > b {
+  color: rgb(255, 0, 0);
+}

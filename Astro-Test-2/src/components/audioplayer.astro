@@ -1,0 +1,97 @@
+---
+import "../styles/style.css";
+---
+
+<div class="audio-div">
+	<button id="audio-play"></button>
+	<img
+		aria-hidden="true"
+		class="volume-icon"
+		src="https://deltarune.com/assets/images/volume.png"
+	/>
+	<input
+		aria-label="Volume"
+		class="volume"
+		max="100"
+		min="0"
+		type="range"
+		value="50"
+	/>
+	<audio src="https://www.omori-game.com/audio/bgm/junkyard.mp3" loop>
+		<a href="https://omori.bandcamp.com/track/stardust-diving-2"
+			>Stardust Diving</a
+		> - OMORI OST - Pedro Silva</audio
+	>
+	<audio
+		src="https://cdn.discordapp.com/attachments/1045788250297597974/1082542989345308672/2194848856.mp3"
+		loop>
+		<a href="https://tobyfox.bandcamp.com/track/field-of-hopes-and-dreams"
+			>Field of Hopes and Dreams</a
+		> - Deltarune Ch1 OST - Toby Fox</audio
+	>
+	<audio
+		src="https://cdn.discordapp.com/attachments/1045788250297597974/1082543365540823121/3809855174.mp3"
+		loop>
+		<a href="https://tobyfox.bandcamp.com/track/core">CORE</a> - Undertale OST
+		- Toby Fox</audio
+	>
+	<audio
+		src="https://cdn.discordapp.com/attachments/1045788250297597974/1082543981612769401/2557952357.mp3"
+		loop>
+		<a href="https://omori.bandcamp.com/track/the-heart-of-the-desert"
+			>The Heart of the Desert</a
+		> - OMORI OST - Pedro Silva</audio
+	>
+	<audio
+		src="https://cdn.discordapp.com/attachments/1045788250297597974/1082544306344185887/1670716363.mp3"
+		loop>
+		<a href="https://omori.bandcamp.com/track/worlds-end-valentine">
+			World's End Valentine</a
+		> - OMORI OST - Pedro Silva</audio
+	>
+	<audio
+		src="https://cdn.discordapp.com/attachments/1045788250297597974/1082544679171665980/1824059517.mp3"
+		loop>
+		<a href="https://nightmargin.bandcamp.com/track/on-little-cat-feet-2">
+			On Little Cat Feet</a
+		> - OneShot OST</audio
+	>
+	<audio src="https://ordoor-tk.000webhostapp.com/1429923996.mp3" loop>
+		<a href="https://radicaldreamland.bandcamp.com/track/resurrections">
+			Resurrections</a
+		> - Celeste OST - Celeste
+	</audio>
+	<div id="audio-title">Not Playing</div>
+	<script>
+		const audioplay = document.querySelector<HTMLButtonElement>("#audio-play");
+		const slider = document.querySelector<HTMLInputElement>(".audio-div > input");
+		audioplay?.addEventListener("mousedown", function (e) {
+			this.classList.add("clicked");
+			const audioTitle = document.querySelector("#audio-title");
+			console.log(e, this);
+			if (this.classList.contains("playing")) {
+				const playing = document.querySelector<HTMLAudioElement>(".audio-div > audio.playing");
+				playing?.pause();
+				playing ? (playing.currentTime = 0) : null;
+				this.classList.remove("playing");
+				playing?.classList.remove("playing");
+				audioTitle ? (audioTitle.innerHTML = "Not playing") : null;
+			} else {
+				const playingAudio = document.querySelectorAll<HTMLAudioElement>(".audio-div > audio")[Math.floor(Math.random() *document.querySelectorAll(".audio-div > audio").length)];
+				playingAudio.play();
+				playingAudio.classList.add("playing");
+				this.classList.add("playing");
+				audioTitle ? (audioTitle.innerHTML = "Now Playing:" + playingAudio.innerHTML) : null;
+			}
+		});
+		audioplay?.addEventListener("mouseup", function (e) {
+			this.classList.remove("clicked");
+			console.log(e, this);
+		});
+		slider?.addEventListener("change", function (e) {
+			let audioinp = this;
+			document.querySelectorAll<HTMLAudioElement>(".audio-div > audio").forEach(function (audioele) { audioele.volume = (audioinp.value as unknown as number) / 100; });
+		});
+		document.querySelectorAll<HTMLAudioElement>(".audio-div > audio")?.forEach(function (audioele) { audioele.volume = (document.querySelector<HTMLInputElement>(".audio-div > input")?.value as unknown as number) / 100; });
+	</script>
+</div>

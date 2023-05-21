@@ -1,0 +1,80 @@
+---
+import '../styles/style.css'
+export interface Props {
+	title: string;
+	leftColumn: boolean
+}
+
+const { title, leftColumn } = Astro.props;
+---
+
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="description" content="Astro description">
+		<meta name="viewport" content="width=device-width" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<meta name="generator" content={Astro.generator} />
+		<title>{title}</title>
+	</head>
+	<body>
+        <div class="main-div">
+			<div class="buffer-logo"></div>
+			<div class="navigation">
+			  <a href="/">Home</a>
+			  <a href="/about-me/">About Me</a>
+			  <a href="/contact/">Contact</a>
+			  <a href="/credits/">Credits</a>
+			  <a id="secret" class="hidden" href="/secret">Secret</a>
+			</div>
+			<div class="main-site">
+				{leftColumn && (
+					<div class="l_column">
+						Links: <br>
+						<img src="https://s2.googleusercontent.com/s2/favicons?domain=https://www.youtube.com" style="transform: translate(0, 2px);"> <a href="https://www.youtube.com/@ordoor">YouTube</a> <br>
+						<img src="https://s2.googleusercontent.com/s2/favicons?domain=https://www.twitter.com" style="transform: translate(0, 2px);"> <a href="https://twitter.com/ordoor_/" title="Please no, don't click on this">Twitter</a> <br>
+							<img src="https://s2.googleusercontent.com/s2/favicons?domain=https://github.com" style="transform: translate(0, 2px);"> <a href="https://github.com/ordoor" title="Most of my code is not on Github">Github</a>
+						<h2>Changelog</h2>
+						<div style="height: 6em; overflow: auto;" id="changelog" class="box">
+							<p><b>2023-03-06:</b> Changelog created and audio player fixed</p>
+							<p><b>2023-03-01:</b> Site was created</p>
+						</div>
+					</div>
+				)}
+			  <div class="m_column">
+				<slot>
+			  </div>
+			  <div class="r_column">
+				<webring-css site="https://ordoor.neocities.org">
+				</webring-css>
+				<style>
+				  webring-css {
+				  background: url('https://raw.githubusercontent.com/wiregrrrl/ACDSring/main/bg.png');
+				  
+				  /*block or inline-block work. Adjust as you want babyyy*/
+				  display: inline-block;
+				  max-width: 180px;
+				  margin: 1rem auto;
+				}
+				</style>
+				<script type="text/javascript" src="https://wiregrrrl.neocities.org/js/ACDSring.js" defer></script>
+			  </div>
+			</div>
+		  </div>
+	</body>
+</html>
+<style is:global>
+	:root {
+		--accent: 124, 58, 237;
+		--accent-gradient: linear-gradient(45deg, rgb(var(--accent)), #da62c4 30%, white 60%);
+	}
+	html {
+		font-family: system-ui, sans-serif;
+		background-color: #F6F6F6;
+	}
+	code {
+		font-family: Menlo, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono,
+			Bitstream Vera Sans Mono, Courier New, monospace;
+	}
+</style>

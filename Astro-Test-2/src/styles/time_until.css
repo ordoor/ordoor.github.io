@@ -1,0 +1,226 @@
+:root {
+    --highlight-color: yellow;
+    --box-width: 225px;
+}
+
+body {
+    background-color: #161616;
+}
+
+#box-container {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.timer-hr-min {
+    font-size: 3em;
+    color: rgb(204, 204, 204);
+}
+
+.box {
+    font-family: "DDG_ProximaNova", "DDG_ProximaNova_UI_0", "DDG_ProximaNova_UI_1", "DDG_ProximaNova_UI_2", "DDG_ProximaNova_UI_3", "DDG_ProximaNova_UI_4", "DDG_ProximaNova_UI_5", "DDG_ProximaNova_UI_6", "Proxima Nova", "Helvetica Neue", "Helvetica", "Segoe UI", "Nimbus Sans L", "Liberation Sans", "Open Sans", FreeSans, Arial, sans-serif;
+    background-color: #282828;
+    display: inline-block;
+    margin: 5px;
+    padding: 10px;
+    border-radius: 5%;
+    width: var(--box-width);
+}
+
+.title-container {
+    display: flex;
+    align-items: center;
+}
+
+.title-container .title {
+    flex: 1;
+    margin-right: 4px;
+}
+
+.title-container button {
+    white-space: nowrap;
+}
+
+.greater-box {
+    font-family: "DDG_ProximaNova", "DDG_ProximaNova_UI_0", "DDG_ProximaNova_UI_1", "DDG_ProximaNova_UI_2", "DDG_ProximaNova_UI_3", "DDG_ProximaNova_UI_4", "DDG_ProximaNova_UI_5", "DDG_ProximaNova_UI_6", "Proxima Nova", "Helvetica Neue", "Helvetica", "Segoe UI", "Nimbus Sans L", "Liberation Sans", "Open Sans", FreeSans, Arial, sans-serif;
+    margin: 5px;
+    padding: 10px;
+    border-radius: 5%;
+    width: var(--box-width);
+    background-color: darkblue;
+    height: 275.5px;
+    color: white;
+    border: 3px solid black;
+    display: none;
+}
+
+.greater-data {
+    width: calc(100% - 10px);
+    height: 150px;
+    border-radius: 7px;
+    background-color: midnightblue;
+    color: white;
+    margin: 1px;
+    padding: 2px;
+    border: 2px solid black;
+    font-size: small;
+    overflow-y: scroll;
+}
+
+.greater-prefix {
+    width: calc(100% - 8px);
+    height: 1em;
+    border-radius: 7px;
+    background-color: midnightblue;
+    color: white;
+    padding: 2px;
+    border: 2px solid black;
+    font-size: small;
+}
+
+.settings-box {
+    color: rgb(204, 204, 204);
+    background-color: maroon;
+    display: inline-block;
+    margin: 5px;
+    padding: 10px;
+    border-radius: 5%;
+    width: var(--box-width);
+    height: 297.5px;
+    border: 3px solid mediumvioletred;
+    position: relative;
+    font-size: 16px;
+}
+
+.import-export-box {
+    color: rgb(204, 204, 204);
+    background-color: darkgreen;
+    display: inline-block;
+    margin: 5px;
+    padding: 10px;
+    border-radius: 5%;
+    width: var(--box-width);
+    height: 297.5px;
+    border: 3px solid rgb(47, 107, 74);
+    position: relative;
+    font-size: 16px;
+}
+
+.import-export-box>.ie-data {
+    width: calc(100% - 10px);
+    height: 263px;
+    border-radius: 7px;
+    background-color: black;
+    color: white;
+}
+
+.import-export-box>button {
+    padding: 1px 4px;
+}
+
+.import-export-box>#ie-export {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+}
+
+.box>button {
+    width: 52px;
+    height: 22px;
+    padding: 0px;
+    text-align: center;
+
+}
+
+.settings-box>.settings-box-update {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+}
+
+.settings-box>input {
+    width: calc(100% - 10px);
+    margin-top: -10px;
+    height: 16px;
+    padding: 1px 2px;
+    border-width: 2px;
+}
+
+.settings-box>label {
+    margin: 10px 0px;
+}
+
+.timer-sec {
+    font-size: 1.5em;
+    color: #999;
+    position: relative;
+    bottom: 0.7em;
+    right: -5px;
+}
+
+.box> :is(input, textarea), .title-container > :is(input, textarea){
+    background-color: black;
+    color: white;
+}
+.title {
+    width: calc(100% - 65px);
+}
+
+.box>textarea {
+    width: 100%;
+    box-sizing: border-box;
+    height: 150px;
+    border-radius: 7px;
+    resize: horizontal;
+}
+
+input.prefix,
+.local-tick-time {
+    width: 100%;
+    box-sizing: border-box;
+    border-radius: 5px;
+}
+
+#addBox {
+    font-family: "DDG_ProximaNova", "DDG_ProximaNova_UI_0", "DDG_ProximaNova_UI_1", "DDG_ProximaNova_UI_2", "DDG_ProximaNova_UI_3", "DDG_ProximaNova_UI_4", "DDG_ProximaNova_UI_5", "DDG_ProximaNova_UI_6", "Proxima Nova", "Helvetica Neue", "Helvetica", "Segoe UI", "Nimbus Sans L", "Liberation Sans", "Open Sans", FreeSans, Arial, sans-serif;
+    background-color: #282828;
+    display: inline-block;
+    margin: 5px;
+    padding: 10px;
+    border-radius: 5%;
+    color: rgb(204, 204, 204);
+}
+
+.next-up {
+    color: white;
+    width: 100%;
+    box-sizing: border-box;
+    height: 1em;
+    overflow-y: scroll;
+}
+
+#deactivate {
+    background-color: red;
+    color: white;
+    width: 20px;
+    height: 20px;
+}
+
+.box {
+    border: 3px solid black;
+}
+
+.box-highlight {
+    border: 3px solid var(--highlight-color);
+}
+
+#quick-options {
+    font-family: "DDG_ProximaNova", "DDG_ProximaNova_UI_0", "DDG_ProximaNova_UI_1", "DDG_ProximaNova_UI_2", "DDG_ProximaNova_UI_3", "DDG_ProximaNova_UI_4", "DDG_ProximaNova_UI_5", "DDG_ProximaNova_UI_6", "Proxima Nova", "Helvetica Neue", "Helvetica", "Segoe UI", "Nimbus Sans L", "Liberation Sans", "Open Sans", FreeSans, Arial, sans-serif;
+    margin: 5px;
+    padding: 10px;
+    border-radius: 5%;
+    background: white;
+    display: inline-block;
+    width: var(--box-width);
+    border: 3px solid gray;
+}

@@ -1,0 +1,93 @@
+---
+import "../styles/style.css";
+import AudioPlayer from "../components/audioplayer.astro";
+export interface Props {
+	title: string;
+}
+
+const { title } = Astro.props;
+const greetings = ["Greetings.", "Howdy!", "Hello!", "Hi!", "Welcome!"];
+const greeting = greetings[Math.floor(Math.random() * greetings.length)];
+---
+
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="description" content="Astro description" />
+		<meta name="viewport" content="width=device-width" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<meta name="generator" content={Astro.generator} />
+		<title>{title}</title>
+	</head>
+	<body>
+		<div class="main-div">
+			<div class="buffer-logo"></div>
+			<div class="navigation">
+				<a href="/">Home</a>
+				<a href="/about-me/">About Me</a>
+				<a href="/contact/">Contact</a>
+				<a href="/credits/">Credits</a>
+				<a id="secret" class="hidden" href="/secret">Secret</a>
+			</div>
+			<div class="main-site">
+				<div class="m_column">
+					<slot />
+				</div>
+					<div class="r_column">
+						<webring-css site="https://ordoor.neocities.org">
+						</webring-css>
+						<style>
+							webring-css {
+								background: url("https://raw.githubusercontent.com/wiregrrrl/ACDSring/main/bg.png");
+
+								/*block or inline-block work. Adjust as you want babyyy*/
+								display: inline-block;
+								max-width: 180px;
+								margin: 1rem auto;
+							}
+						</style>
+						<script
+							type="text/javascript"
+							src="https://wiregrrrl.neocities.org/js/ACDSring.js"
+							defer
+						></script>
+				</div>
+			</div>
+			<AudioPlayer />
+		</div>
+	</body>
+	<style is:global>
+		:root {
+			--accent: 124, 58, 237;
+			--accent-gradient: linear-gradient(
+				45deg,
+				rgb(var(--accent)),
+				#da62c4 30%,
+				white 60%
+			);
+		}
+		html {
+			font-family: system-ui, sans-serif;
+			background-color: #f6f6f6;
+		}
+		code {
+			font-family: Menlo, Monaco, Lucida Console, Liberation Mono,
+				DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New,
+				monospace;
+		}
+	</style>
+	<script>
+		sessionStorage.setItem('FUN', Math.floor((Math.random() * 100) + 1).toString());
+		(document as any).FUNtrigger = function(value: number) {
+			sessionStorage.setItem('FUN', value.toString())
+			trueFUNtrigger()
+		}
+		function trueFUNtrigger() {
+			if ([12, 66].find(x=>{return sessionStorage.FUN == x})) {
+		       document.querySelector('#secret')?.classList.remove('hidden')
+		  }
+		}
+		trueFUNtrigger()
+	</script>
+</html>
