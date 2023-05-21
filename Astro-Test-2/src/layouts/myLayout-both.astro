@@ -1,5 +1,6 @@
 ---
 import '../styles/style.css'
+import AudioPlayer from "../components/audioplayer.astro"
 export interface Props {
 	title: string;
 	leftColumn: boolean
@@ -63,6 +64,7 @@ const { title, leftColumn } = Astro.props;
 			  </div>
 			</div>
 		  </div>
+		  <AudioPlayer />
 	</body>
 </html>
 <style is:global>
