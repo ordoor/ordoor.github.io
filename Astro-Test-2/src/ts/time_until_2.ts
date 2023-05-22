@@ -43,7 +43,8 @@ try {
         UpdateBox: Function;
     }
     const MAX_DATE_NUMBER = 8_640_000_000_000_000;
-    const MAX_CALUCLATEABLE_DATE = new Date(Date.now() + 2_678_400_000 - 1);
+    //const MAX_CALUCLATEABLE_DATE = new Date(Date.now() + 2_678_400_000 - 1);
+    const MAX_CALUCLATEABLE_DATE = new Date(MAX_DATE_NUMBER - 1);
     const days: Array<'Sunday' | 'Monday' | 'Tuesday' | 'Wednesday' | 'Thursday' | 'Friday' | 'Saturday'> = [
         'Sunday',
         'Monday',
@@ -422,19 +423,24 @@ try {
             }
             box.upcomingDate = upcomingDate ?? undefined;
             if (box.upcomingDate) {
-                const timeKeeper = new Date(box.upcomingDate.millisecondsUntil ?? 0)
-                const timeKeeperString = timeKeeper.toISOString()
-                const hours = (((+timeKeeperString.slice(8, 10) - 1) * 24) + timeKeeper.getUTCHours()).toString().padStart(2, '0');
-                if (box.highlightMatches) {
-                    const [hMatches, hDays = 0, hHours = 0, hMinutes = 0, hSeconds = 0, hMilliseconds = 0] = box.highlightMatches
-                    if (((+hDays * 86400000) + (+hHours * 3600000) + (+hMinutes * 60000) + (+hSeconds * 1000) + +hMilliseconds) >= (box.upcomingDate.millisecondsUntil ?? Infinity)) {
-                        box.classList.add('box-highlight');
-                    } else {
-                        box.classList.remove('box-highlight');
-                    }
-                } else { box.classList.remove('box-highlight'); }
-                (box.specialElements.timerHrMin ?? { innerText: "" }).innerText = hours + ':' + timeKeeper.getUTCMinutes().toString().padStart(2, '0');
-                (box.specialElements.timerSec ?? { innerText: "" }).innerText = timeKeeperString.slice(17, settings.secondsSize);
+                if (box.upcomingDate.date?.getTime() === MAX_CALUCLATEABLE_DATE.getTime()) {
+                    (box.specialElements.timerHrMin ?? { innerText: "00:00" }).innerText = "Infinity";
+                    (box.specialElements.timerSec ?? { innerText: "00.000" }).innerText = "Infinity";
+                } else {
+                    const timeKeeper = new Date(box.upcomingDate.millisecondsUntil ?? 0)
+                    const timeKeeperString = timeKeeper.toISOString()
+                    const hours = (((+timeKeeperString.slice(8, 10) - 1) * 24) + timeKeeper.getUTCHours()).toString().padStart(2, '0');
+                    if (box.highlightMatches) {
+                        const [hMatches, hDays = 0, hHours = 0, hMinutes = 0, hSeconds = 0, hMilliseconds = 0] = box.highlightMatches
+                        if (((+hDays * 86400000) + (+hHours * 3600000) + (+hMinutes * 60000) + (+hSeconds * 1000) + +hMilliseconds) >= (box.upcomingDate.millisecondsUntil ?? Infinity)) {
+                            box.classList.add('box-highlight');
+                        } else {
+                            box.classList.remove('box-highlight');
+                        }
+                    } else { box.classList.remove('box-highlight'); }
+                    (box.specialElements.timerHrMin ?? { innerText: "00:00" }).innerText = hours + ':' + timeKeeper.getUTCMinutes().toString().padStart(2, '0');
+                    (box.specialElements.timerSec ?? { innerText: "00.000" }).innerText = timeKeeperString.slice(17, settings.secondsSize);
+                }
                 const nextUpText = box.upcomingDate.text.match(/\*dis(?:play)? ?\((.*?)\)\*/);
                 let nextUpText2 = nextUpText ? nextUpText[1] : box.upcomingDate.text
                 switch (true) {
@@ -442,7 +448,6 @@ try {
                     case box.settings?.dayOfWeek === 'shorten3': case !!nextUpText2.match(/\*(sh3-dow)\*/): nextUpText2 = nextUpText2.replace(/^([A-Z][a-z]*)/, x => x.substring(0, 3)).replace(/\*(sh3-dow)\*/, "");
                     case box.settings?.date === 'hide': case !!nextUpText2.match(/\*(h-date|h-d)\*/): nextUpText2 = nextUpText2.replace(/^(\d{4})-(\d{2})-(\d{2}) /, "").replace(/\*(h-date|h-d)\*/, "");
                 }
-                
                 box.specialElements.nextUp ? box.specialElements.nextUp.innerHTML = nextUpText2 : void (0);
             } else {
                 box.specialElements.timerHrMin ? box.specialElements.timerHrMin.innerText = "00:00" : void (0);

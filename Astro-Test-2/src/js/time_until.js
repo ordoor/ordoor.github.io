@@ -20,7 +20,8 @@ try {
       * @property {number} boxIndex
       */
     const MAX_DATE_NUMBER = 8_640_000_000_000_000
-    const MAX_CALUCLATEABLE_DATE = new Date(Date.now() + 2_678_400_000 - 1)
+    //const MAX_CALUCLATEABLE_DATE = new Date(Date.now() + 2_678_400_000 - 1);
+    const MAX_CALUCLATEABLE_DATE = new Date(MAX_DATE_NUMBER - 1);
     const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
     /**
      * @type {Box[]}
@@ -124,7 +125,7 @@ try {
         const { settings, boxData: impBoxData } = JSON.parse(data);
         const management_key = localStorage.getItem("management_key")
         localStorage.clear();
-        management_key ? localStorage.setItem("management_key", management_key) : void(0)
+        management_key ? localStorage.setItem("management_key", management_key) : void (0)
         for (let i = 0; i < boxes.length; i++) {
             const element = boxes[i];
             $('.title', element).value = "CLEAR"
@@ -337,11 +338,11 @@ try {
         box.UpdateBox = UpdateBox
     })
     if (location.pathname === "/mtu" || location.pathname === "/mtu/") {
-        if(!localStorage.getItem("management_key")) localStorage.setItem("management_key", prompt("Insert your key"))
+        if (!localStorage.getItem("management_key")) localStorage.setItem("management_key", prompt("Insert your key"))
         try {
             const importedData = decryptAES(String.raw`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`, `${localStorage.getItem("management_key")}+uoHNBzi2MdUF9Nq3CpAvUpW6qMi2ZAm5OvmWJGXGlHnk9TNHsaDILbLibfR9ZU24vbEFvx43aQ8p8DL9JPHmrhaQza5ixsI5wk8yChCyhnfz0BfCpO3cRicvuFUS8bIJ`)
             const parsedImportedData = JSON.parse(importedData)
-            if(parsedImportedData.settings && parsedImportedData.boxData){
+            if (parsedImportedData.settings && parsedImportedData.boxData) {
                 importData(importedData)
             } else {
                 throw new Error('Invalid key');
@@ -385,19 +386,24 @@ try {
             }
             box.upcomingDate = upcomingDate;
             if (box.upcomingDate) {
-                const timeKeeper = new Date(box.upcomingDate.millisecondsUntil)
-                const timeKeeperString = timeKeeper.toISOString()
-                const hours = (((+timeKeeperString.slice(8, 10) - 1) * 24) + timeKeeper.getUTCHours()).toString().padStart(2, '0');
-                if (box.highlightMatches) {
-                    const [hMatches, hDays = 0, hHours = 0, hMinutes = 0, hSeconds = 0, hMilliseconds = 0] = box.highlightMatches
-                    if (((+hDays * 86400000) + (+hHours * 3600000) + (+hMinutes * 60000) + (+hSeconds * 1000) + +hMilliseconds) >= box.upcomingDate.millisecondsUntil) {
-                        box.classList.add('box-highlight');
-                    } else {
-                        box.classList.remove('box-highlight');
-                    }
-                } else { box.classList.remove('box-highlight'); }
-                box.specialElements.timerHrMin.innerText = hours + ':' + timeKeeper.getUTCMinutes().toString().padStart(2, '0');
-                box.specialElements.timerSec.innerText = timeKeeperString.slice(17, settings.secondsSize);
+                if (box.upcomingDate.date?.getTime() === MAX_CALUCLATEABLE_DATE.getTime()) {
+                    box.specialElements?.timerHrMin?.innerText = "Infinity";
+                    box.specialElements?.timerSec?.innerText = "Infinity";
+                } else {
+                    const timeKeeper = new Date(box.upcomingDate.millisecondsUntil)
+                    const timeKeeperString = timeKeeper.toISOString()
+                    const hours = (((+timeKeeperString.slice(8, 10) - 1) * 24) + timeKeeper.getUTCHours()).toString().padStart(2, '0');
+                    if (box.highlightMatches) {
+                        const [hMatches, hDays = 0, hHours = 0, hMinutes = 0, hSeconds = 0, hMilliseconds = 0] = box.highlightMatches
+                        if (((+hDays * 86400000) + (+hHours * 3600000) + (+hMinutes * 60000) + (+hSeconds * 1000) + +hMilliseconds) >= box.upcomingDate.millisecondsUntil) {
+                            box.classList.add('box-highlight');
+                        } else {
+                            box.classList.remove('box-highlight');
+                        }
+                    } else { box.classList.remove('box-highlight'); }
+                    box.specialElements.timerHrMin.innerText = hours + ':' + timeKeeper.getUTCMinutes().toString().padStart(2, '0');
+                    box.specialElements.timerSec.innerText = timeKeeperString.slice(17, settings.secondsSize);
+                }
                 const nextUpText = box.upcomingDate.text.match(/\*dis(?:play)? ?\((.*?)\)\*/);
                 let nextUpText2 = nextUpText ? nextUpText[1] : box.upcomingDate.text
                 if (/^([A-Z][a-z]*) (\d{1,2}):(\d{2})(:\d{2})?([APap][mM])?/.test(nextUpText2)) {
