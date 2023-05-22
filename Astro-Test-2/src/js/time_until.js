@@ -387,8 +387,8 @@ try {
             box.upcomingDate = upcomingDate;
             if (box.upcomingDate) {
                 if (box.upcomingDate.date?.getTime() === MAX_CALUCLATEABLE_DATE.getTime()) {
-                    box.specialElements?.timerHrMin?.innerText = "Infinity";
-                    box.specialElements?.timerSec?.innerText = "Infinity";
+                    box.specialElements.timerHrMin.innerText = "Infinity";
+                    box.specialElements.timerSec.innerText = "Infinity";
                 } else {
                     const timeKeeper = new Date(box.upcomingDate.millisecondsUntil)
                     const timeKeeperString = timeKeeper.toISOString()
