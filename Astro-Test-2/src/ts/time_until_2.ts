@@ -101,7 +101,7 @@ try {
         const stingContainsInf = string.match(/\*(-)?Infinity\*/);
         if (stingContainsInf) {
             if (stingContainsInf[1]) {
-                return new Date(-MAX_DATE_NUMBER);
+                return new Date(-(MAX_DATE_NUMBER ?? 8640000000000000));
             } else {
                 return MAX_CALUCLATEABLE_DATE;
             }
