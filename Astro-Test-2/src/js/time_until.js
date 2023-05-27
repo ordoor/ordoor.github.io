@@ -207,6 +207,7 @@ try {
      * @param {boolean} isNotification
      */
     const notificationTextRegEx = /\*not(?:ification)? ?\((.*?)\)\*/
+    const regNotification = /\*(NOTIFY|NOTIFICATION)\*/i
     function nextUpConverter(oldNextUpText = "", boxSettings = {dayOfWeek: null, date: null}, isNotification = false) {
         const nextUpText = oldNextUpText.match(/\*dis(?:play)? ?\((.*?)\)\*/);
         let nextUpText2 = nextUpText ? nextUpText[1] : oldNextUpText
@@ -217,6 +218,7 @@ try {
                 case boxSettings.date === 'hide': case !!nextUpText2.match(/\*(h-date|h-d)\*/): nextUpText2 = nextUpText2.replace(/^(\d{4})-(\d{2})-(\d{2}) /, "").replace(/\*(h-date|h-d)\*/, "");
             }
         }
+        nextUpText2 = nextUpText2.replace(notificationTextRegEx, '').replace(regNotification, '')
         if(isNotification) {
             const notificationText = oldNextUpText.match(notificationTextRegEx)
             nextUpText2 = notificationText ? notificationText[1] : nextUpText2;
@@ -424,7 +426,6 @@ try {
                     }
                 } else {
                     const regAlarm = /\*ALARM\*/i;
-                    const regNotification = /\*(NOTIFY|NOTIFICATION)\*/i
                     if(bypassTickTest === true){
                         value.alarm = true;
                         value.notification = true;
