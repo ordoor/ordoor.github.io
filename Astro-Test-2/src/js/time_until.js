@@ -201,13 +201,14 @@ try {
             });
         }
     }
+    const notificationTextRegEx = /\*not(?:ification)? ?\((.*?)\)\*/
+    const regNotification = /\*(NOTIFY|NOTIFICATION)\*/i
     /**
      * 
      * @param {string} oldNextUpText 
      * @param {boolean} isNotification
+     * @param {{dayOfWeek: string | null, date: string | null,}} boxSettings
      */
-    const notificationTextRegEx = /\*not(?:ification)? ?\((.*?)\)\*/
-    const regNotification = /\*(NOTIFY|NOTIFICATION)\*/i
     function nextUpConverter(oldNextUpText = "", boxSettings = {dayOfWeek: null, date: null}, isNotification = false) {
         const nextUpText = oldNextUpText.match(/\*dis(?:play)? ?\((.*?)\)\*/);
         let nextUpText2 = nextUpText ? nextUpText[1] : oldNextUpText
