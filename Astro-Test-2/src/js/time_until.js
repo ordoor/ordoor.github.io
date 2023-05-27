@@ -457,8 +457,9 @@ try {
                         console.log(value.alarm)
                     }
                     if ((titleValue.match(regNotification) || value.text.match(regNotification) || value.text.match(notificationTextRegEx)) && value.notification === false && bypassTickTest === false) {
-                        const valueNotificationOnClickProto = ['', (value.text.match(regNotificationOnClick) ?? ['',''])[1].replace(/\\([^])/, '$1')] ?? ['',`window.open('${(value.text.match(regNotificationOpen) ?? ['', ''])[1].replace('\\/', '/')}', '_blank')`];
-                        const valueNotificationOnClick = valueNotificationOnClickProto == null ? '' : valueNotificationOnClickProto[1]
+                        const valueNotificationOnClickProto = (value.text.match(regNotificationOnClick) ?? ['',''])[1].replace(/\\([^])/, '$1') || `window.open('${(value.text.match(regNotificationOpen) ?? ['', ''])[1].replace('\\/', '/')}', '_blank')`;
+                        console.log(valueNotificationOnClickProto)
+                        const valueNotificationOnClick = valueNotificationOnClickProto == null ? '' : valueNotificationOnClickProto
                         notifyMe(nextUpConverter(value.text, undefined, true), [{type: "click", listener: Function('ev', valueNotificationOnClick)}])
                         value.notification = true
                         console.log(value.notification, value.text)
