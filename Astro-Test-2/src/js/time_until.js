@@ -2,7 +2,7 @@
 import { $, $$, dateAdd, decryptAES } from "./core.js";
 try {
     /**
-     * @typedef {{ millisecondsUntil?: number; text: string; alarm: boolean; date?: Date } | null} DataValueLine
+     * @typedef {{ millisecondsUntil?: number; text: string; alarm: boolean; date?: Date; notification: boolean } | null} DataValueLine
      */
     /**
       * A Box
@@ -178,7 +178,50 @@ try {
             boxData
         });
     }
-
+    /**
+     * @author https://developer.mozilla.org/en-US/docs/Web/API/notification
+     * @param {string} notificationText
+     */
+    function notifyMe(notificationText) {
+        if (!("Notification" in window)) {
+            // Check if the browser supports notifications
+            alert("This browser does not support desktop notification");
+        } else if (Notification.permission === "granted") {
+            // Check whether notification permissions have already been granted;
+            // if so, create a notification
+            const notification = new Notification(notificationText);
+            // …
+        } else if (Notification.permission !== "denied") {
+            // We need to ask the user for permission
+            Notification.requestPermission().then((permission) => {
+                // If the user accepts, let's create a notification
+                if (permission === "granted") {
+                    const notification = new Notification(notificationText);
+                }
+            });
+        }
+    }
+    /**
+     * 
+     * @param {string} oldNextUpText 
+     * @param {boolean} isNotification
+     */
+    function nextUpConverter(oldNextUpText = "", boxSettings = {dayOfWeek: null, date: null}, isNotification = false) {
+        const nextUpText = oldNextUpText.match(/\*dis(?:play)? ?\((.*?)\)\*/);
+        let nextUpText2 = nextUpText ? nextUpText[1] : oldNextUpText
+        if (!nextUpText && (/^([A-Z][a-z]*) (\d{1,2}):(\d{2})(:\d{2})?([APap][mM])?/.test(nextUpText2) || /^(\d{4})-(\d{2})-(\d{2}) (\d{1,2}):(\d{2})(:\d{2})?([APap][mM])?/.test(nextUpText2))) {
+            switch (true) {
+                case boxSettings.dayOfWeek === 'hide': case !!nextUpText2.match(/\*(h-dow|h-d)\*/): nextUpText2 = nextUpText2.replace(/^([A-Z][a-z]* )/, "").replace(/\*(h-dow|h-d)\*/, "");
+                case boxSettings.dayOfWeek === 'shorten3': case !!nextUpText2.match(/\*(sh3-dow)\*/): nextUpText2 = nextUpText2.replace(/^([A-Z][a-z]*)/, x => x.substring(0, 3)).replace(/\*(sh3-dow)\*/, "");
+                case boxSettings.date === 'hide': case !!nextUpText2.match(/\*(h-date|h-d)\*/): nextUpText2 = nextUpText2.replace(/^(\d{4})-(\d{2})-(\d{2}) /, "").replace(/\*(h-date|h-d)\*/, "");
+            }
+        }
+        if(isNotification) {
+            const notificationText = oldNextUpText.match(/\*not(?:ification)? ?\((.*?)\)\*/)
+            nextUpText2 = notificationText ? notificationText[1] : nextUpText2;
+        }
+        return nextUpText2
+    }
     const clickSound = new Audio(settings.customClickSound || 'https://cdn.videvo.net/videvo_files/audio/premium/audio0051/watermarked/ButtonSolidCompute%20SE040304_preview.mp3')
     $('button#ie-export').addEventListener('click', _ => {
         console.log(exportData())
@@ -318,7 +361,7 @@ try {
             textarea.value.replace(removeCommentsPattern, "").split("\n").forEach((item, index) => {
                 let itemText = $('.prefix', box).value + item
                 let itemDate = StringToDate(itemText)
-                values[index] = { text: itemText, date: itemDate, alarm: false }
+                values[index] = { text: itemText, date: itemDate, alarm: false, notification: false }
             })
             // console.log(values)
             box.values = values
@@ -378,11 +421,25 @@ try {
                     if (upcomingDate == null || value.millisecondsUntil < upcomingDate.millisecondsUntil) {
                         upcomingDate = value;
                     }
-                } else if ((titleValue.match(/\*ALARM\*/i) || value.text.match(/\*ALARM\*/i)) && value.alarm === false && bypassTickTest === false) {
-                    alarmSound.play().catch(err => { console.error(err) })
-                    value.alarm = true
-                    console.log(value.alarm)
+                } else {
+                    const regAlarm = /\*ALARM\*/i;
+                    const regNotification = /\*(NOTIFY|NOTIFICATION)\*/i
+                    if(bypassTickTest === true){
+                        value.alarm = true;
+                        value.notification = true;
+                    }
+                    if ((titleValue.match(regAlarm) || value.text.match(regAlarm)) && value.alarm === false && bypassTickTest === false) {
+                        alarmSound.play().catch(err => { console.error(err) })
+                        value.alarm = true
+                        console.log(value.alarm)
+                    }
+                    if ((titleValue.match(regNotification) || value.text.match(regNotification)) && value.notification === false && bypassTickTest === false) {
+                        notifyMe(nextUpConverter(value.text, undefined, true))
+                        value.notification = true
+                        console.log(value.notification, value.text)
+                    }
                 }
+
             }
             box.upcomingDate = upcomingDate;
             if (box.upcomingDate) {
@@ -404,16 +461,7 @@ try {
                     box.specialElements.timerHrMin.innerText = hours + ':' + timeKeeper.getUTCMinutes().toString().padStart(2, '0');
                     box.specialElements.timerSec.innerText = timeKeeperString.slice(17, settings.secondsSize);
                 }
-                const nextUpText = box.upcomingDate.text.match(/\*dis(?:play)? ?\((.*?)\)\*/);
-                let nextUpText2 = nextUpText ? nextUpText[1] : box.upcomingDate.text
-                if (/^([A-Z][a-z]*) (\d{1,2}):(\d{2})(:\d{2})?([APap][mM])?/.test(nextUpText2)) {
-                    switch (true) {
-                        case box.settings.dayOfWeek === 'hide': case !!nextUpText2.match(/\*(h-dow|h-d)\*/): nextUpText2 = nextUpText2.replace(/^([A-Z][a-z]* )/, "").replace(/\*(h-dow|h-d)\*/, ""); break;
-                        case box.settings.dayOfWeek === 'shorten3': case !!nextUpText2.match(/\*(sh3-dow)\*/): nextUpText2 = nextUpText2.replace(/^([A-Z][a-z]*)/, x => x.substring(0, 3)).replace(/\*(sh3-dow)\*/, ""); break;
-                        case box.settings.date === 'hide': case !!nextUpText2.match(/\*(h-date|h-d)\*/): nextUpText2 = nextUpText2.replace(/^(\d{4})-(\d{2})-(\d{2}) /, "").replace(/\*(h-date|h-d)\*/, ""); break;
-                    }
-                }
-                box.specialElements.nextUp.innerHTML = nextUpText2;
+                box.specialElements.nextUp.innerHTML = nextUpConverter(box.upcomingDate.text, box.settings);
             } else {
                 box.specialElements.timerHrMin.innerText = "00:00";
                 box.specialElements.timerSec.innerText = "00.000";

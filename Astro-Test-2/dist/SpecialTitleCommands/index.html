@@ -41,6 +41,8 @@
     </ul>
     <h2 class="astro-557OIGKN">Data Line's first match, (case <u class="astro-557OIGKN">sensitive</u>): /\*dis(?:play)? ?\((.*?)\)\*/</h2>
     <p class="astro-557OIGKN">Defines exactly what a line's next up data will be</p>
+    <h2 class="astro-557OIGKN">Data Line's first match, (case <u class="astro-557OIGKN">sensitive</u>): /\*not(?:ification)? ?\((.*?)\)\*/</h2>
+    <p class="astro-557OIGKN">Defines exactly what a line's notification will be. Only applys if notifications for this line/box is enabled</p>
 
     <h1 class="astro-557OIGKN">Data Line & TitleCommands</h1>
     <h2 class="astro-557OIGKN">Data Line contains, anywhere on the line or Title contains(case insensitive): "*ALARM*"</h2>
@@ -52,4 +54,6 @@
         <li class="astro-557OIGKN">h-date: Hides Date</li>
         <li class="astro-557OIGKN">h-d: Hides Date and Day of Week</li>
     </ul>
+    <h2 class="astro-557OIGKN">Data Line contains, anywhere on the line or Title matches(case insensitive): /\*(NOTIFY|NOTIFICATION)\*/i</h2>
+    <p class="astro-557OIGKN">Enables notifications for this line/box. Unless defined otherwise, it is equivalent to next up text</p>
 </body></html>
