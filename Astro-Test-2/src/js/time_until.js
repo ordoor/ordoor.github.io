@@ -206,6 +206,7 @@ try {
                 // If the user accepts, let's create a notification
                 if (permission === "granted") {
                     const notification = new Notification(notificationText);
+                    addEventListeners(notification)
                 }
             });
         }
