@@ -181,8 +181,17 @@ try {
     /**
      * @author https://developer.mozilla.org/en-US/docs/Web/API/notification
      * @param {string} notificationText
+     * @param {{type: "click" | "close" | "error" | "show", listener: ((this: Notification, ev: Event) => any)}[]} addEvents
      */
-    function notifyMe(notificationText) {
+    function notifyMe(notificationText, addEvents) {
+        /** @param {Notification} notification */
+        function addEventListeners(notification) {
+            if (!addEvents.length) return;
+            for (let i = 0; i < addEvents.length; i++) {
+                const eventListener = addEvents[i];
+                notification.addEventListener(eventListener.type, eventListener.listener)
+            }
+        }
         if (!("Notification" in window)) {
             // Check if the browser supports notifications
             alert("This browser does not support desktop notification");
@@ -190,7 +199,7 @@ try {
             // Check whether notification permissions have already been granted;
             // if so, create a notification
             const notification = new Notification(notificationText);
-            // …
+            addEventListeners(notification)
         } else if (Notification.permission !== "denied") {
             // We need to ask the user for permission
             Notification.requestPermission().then((permission) => {
@@ -203,6 +212,8 @@ try {
     }
     const notificationTextRegEx = /\*not(?:ification)? ?\((.*?)\)\*/
     const regNotification = /\*(NOTIFY|NOTIFICATION)\*/i
+    const regNotificationOnClick = /\*notC(?:lick)? ?\((.*?)\)\*/
+    const regNotificationOpen = /\*notO(?:pen)? ?\((.*?)\)\*/
     /**
      * 
      * @param {string} oldNextUpText 
@@ -225,6 +236,14 @@ try {
             nextUpText2 = notificationText ? notificationText[1] : nextUpText2;
         }
         return nextUpText2
+    }
+    function isJsonString(str) {
+        try {
+            JSON.parse(str);
+        } catch (e) {
+            return false;
+        }
+        return true;
     }
     const clickSound = new Audio(settings.customClickSound || 'https://cdn.videvo.net/videvo_files/audio/premium/audio0051/watermarked/ButtonSolidCompute%20SE040304_preview.mp3')
     $('button#ie-export').addEventListener('click', _ => {
@@ -437,7 +456,9 @@ try {
                         console.log(value.alarm)
                     }
                     if ((titleValue.match(regNotification) || value.text.match(regNotification) || value.text.match(notificationTextRegEx)) && value.notification === false && bypassTickTest === false) {
-                        notifyMe(nextUpConverter(value.text, undefined, true))
+                        const valueNotificationOnClickProto = value.text.match(regNotificationOnClick) ?? ['',`window.open('${(value.text.match(regNotificationOpen) ?? ['', ''])[1].replace('\\/', '/')}', '_blank')`];
+                        const valueNotificationOnClick = valueNotificationOnClickProto == null ? '' : valueNotificationOnClickProto[1]
+                        notifyMe(nextUpConverter(value.text, undefined, true), [{type: "click", listener: Function('ev', valueNotificationOnClick)}])
                         value.notification = true
                         console.log(value.notification, value.text)
                     }
