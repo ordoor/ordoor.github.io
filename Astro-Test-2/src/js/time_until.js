@@ -206,6 +206,7 @@ try {
      * @param {string} oldNextUpText 
      * @param {boolean} isNotification
      */
+    const notificationTextRegEx = /\*not(?:ification)? ?\((.*?)\)\*/
     function nextUpConverter(oldNextUpText = "", boxSettings = {dayOfWeek: null, date: null}, isNotification = false) {
         const nextUpText = oldNextUpText.match(/\*dis(?:play)? ?\((.*?)\)\*/);
         let nextUpText2 = nextUpText ? nextUpText[1] : oldNextUpText
@@ -217,7 +218,7 @@ try {
             }
         }
         if(isNotification) {
-            const notificationText = oldNextUpText.match(/\*not(?:ification)? ?\((.*?)\)\*/)
+            const notificationText = oldNextUpText.match(notificationTextRegEx)
             nextUpText2 = notificationText ? notificationText[1] : nextUpText2;
         }
         return nextUpText2
@@ -433,7 +434,7 @@ try {
                         value.alarm = true
                         console.log(value.alarm)
                     }
-                    if ((titleValue.match(regNotification) || value.text.match(regNotification)) && value.notification === false && bypassTickTest === false) {
+                    if ((titleValue.match(regNotification) || value.text.match(regNotification) || value.text.match(notificationTextRegEx)) && value.notification === false && bypassTickTest === false) {
                         notifyMe(nextUpConverter(value.text, undefined, true))
                         value.notification = true
                         console.log(value.notification, value.text)
