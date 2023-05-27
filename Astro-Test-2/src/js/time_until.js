@@ -230,7 +230,7 @@ try {
                 case boxSettings.date === 'hide': case !!nextUpText2.match(/\*(h-date|h-d)\*/): nextUpText2 = nextUpText2.replace(/^(\d{4})-(\d{2})-(\d{2}) /, "").replace(/\*(h-date|h-d)\*/, "");
             }
         }
-        nextUpText2 = nextUpText2.replace(notificationTextRegEx, '').replace(regNotification, '')
+        nextUpText2 = nextUpText2.replace(notificationTextRegEx, '').replace(regNotification, '').replace(regNotificationOnClick, '').replace(regNotificationOpen, '')
         if(isNotification) {
             const notificationText = oldNextUpText.match(notificationTextRegEx)
             nextUpText2 = notificationText ? notificationText[1] : nextUpText2;
