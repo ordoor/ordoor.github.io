@@ -106,10 +106,10 @@ let extOptionsHTMLpre = `
 let extExternalCSS = document.createElement("link")
 extExternalCSS.rel = "stylesheet"
 extExternalCSS.href = "https://ordoor.github.io/ttvextension/extendedusernames.css"
-$("head").appendChild(extExternalCSS)
+$("head")?.appendChild(extExternalCSS)
 let extExternalCSSusernameSearchTerms = document.createElement("p")
 extExternalCSSusernameSearchTerms.id = "extExternalCSSusernameSearchTerms"
-$('body').appendChild(extExternalCSSusernameSearchTerms)
+$('body')?.appendChild(extExternalCSSusernameSearchTerms)
 
 
 let addAdditionalNamesI = setInterval(addAdditionalNames, 3000)
@@ -134,20 +134,20 @@ function addAdditionalNames() {
     function GenericSelfDisplayName() {
       if ($('.name-display__name')) {
         for (let i = 0; i < usernameSearchTerms.length; i++) {
-          if (usernameSearchTerms[i].Name == $('.name-display__name').innerText.toLowerCase()) {
+          if (usernameSearchTerms[i].Name == $('.name-display__name')?.innerText.toLowerCase()) {
             UsernameIsPartOfList = true
           }
-          console.log(UsernameIsPartOfList, $('.name-display__name').innerText.toLowerCase())
+          console.log(UsernameIsPartOfList, $('.name-display__name')?.innerText.toLowerCase())
         }
         if (!UsernameIsPartOfList) {
-          usernameSearchTerms.push({ Name: $('.name-display__name').innerText.toLowerCase(), Class: "GenericSelf" })
+          usernameSearchTerms.push({ Name: $('.name-display__name')?.innerText.toLowerCase(), Class: "GenericSelf" })
         }
-        $("[data-test-selector=chat-settings-close-button-selector]").click()
+        $("[data-test-selector=chat-settings-close-button-selector]")?.click()
         clearInterval(hasDisplayNameExistsInterval)
       }
       if ($("[aria-label= ChatBadgeCarousel]")) {
-        $("[aria-label= ChatBadgeCarousel]").click()
-        $("[data-test-selector=chat-settings-close-button-selector]").click()
+        $("[aria-label= ChatBadgeCarousel]")?.click()
+        $("[data-test-selector=chat-settings-close-button-selector]")?.click()
       }
     }
     clearInterval(addAdditionalNamesI)
@@ -225,7 +225,7 @@ function CreateButton() {
     extButton.append(extImg)
     chatRoomContent.appendChild(extpopup)
     try {
-      let chatTypeAgainText = $('.chat-input__buttons-container>:nth-child(2)').childNodes[0];
+      let chatTypeAgainText = $('.chat-input__buttons-container>:nth-child(2)')?.childNodes[0];
       chatTypeAgainText?.insertAdjacentElement("afterend", extButton)
     } catch (error) { throw(error) }
     extpopup.append(extCloseButton);
@@ -245,7 +245,7 @@ function CreateButton() {
         extpopup.style.height = "320px"
         extpopup.style.opacity = "1"
         setTimeout(function () {
-          $("#replaceStreamChat").focus()
+          $("#replaceStreamChat")?.focus()
         }, 200);
       }
     });
@@ -299,7 +299,7 @@ function CreateButton() {
     applyNoCapPreset.addEventListener("click", async () => {
       input.value = '<span style="text-transform: none;">\n' + input.value + '\n</span>'
     });
-    $('#applyTablePreset').addEventListener("click", function () {
+    $('#applyTablePreset')?.addEventListener("click", function () {
       input.value = "#uss\nt(width: 100px;)\ntr()\ntd(c:darkgreen;tt:N;) A1 /td\ntd(c:green;tt:N;) A2 /td\n/tr\ntr()\ntd(c:darkred;tt:N;) B1 /td\ntd(c:red;tt:N;) B2 /td\n/tr\ntr()\ntd(c:cyan;tt:N;) C1 /td\ntd(c:lime;tt:N;) C2 /td\n/tr\n/t"
     });
     //from popup.js
@@ -309,7 +309,7 @@ function CreateButton() {
       let headerDiv = $('.stream-chat-header') ? $('.stream-chat-header') : $("div.Layout-sc-nxg1ff-0.giyKYb.video-chat__header");
       let newVersion = document.getElementById("replaceStreamChat").value;
       let headSize = document.getElementById("headSize").value;
-      $$("clone", streamChatHeading).forEach(cloneele => {
+      $$("clone", streamChatHeading)?.forEach(cloneele => {
         cloneele.setAttribute("destroyed", "true")
       })
 
@@ -327,10 +327,10 @@ function CreateButton() {
           p2 = p2.replace(/c:/g, 'color:').replace(/tt:/g, 'text-transform:').replace(/: ?n/gi, ': none')
           return `<span style="${p2}">${p3}</span>`
         }).replace(/^#uss/, '').replace(/\\n/g, '<br/>').replace(/<clone e="([\s\S]*)"\/>/g, function (_p1, p2) {
-          return $(p2).outerHTML
+          return $(p2)?.outerHTML
         });
         streamChatHeading.innerHTML = newerVersion
-      } else if (newVersion.startsWith(">version")) {
+      } else if (newVersion.startsWith(">version") && $('#replaceStreamChat')) {
         if (newVersion.toLowerCase().startsWith('>version = adv')) {
           localStorage.setItem('ext-version', 'advanced')
           $('#replaceStreamChat').value = `Version is now ${localStorage.getItem('ext-version')}, refresh to update`
@@ -347,7 +347,7 @@ function CreateButton() {
         streamChatHeading.innerHTML = newVersion.replace(/<(?:clone|echo) e="([^"]*)"( repeatTime="(\d*)")?\/>/g, function (_p1, p2, p3) {
           cloneid = Math.floor(Math.random() * 1000000000000000)
           try {
-            return `<clone id="clone-${cloneid}"e="${p2}"${(p3) ? p3 : ' repeatTime="1000"'} style="text-transform: none;">${$(p2).outerHTML}</clone>`
+            return `<clone id="clone-${cloneid}"e="${p2}"${(p3) ? p3 : ' repeatTime="1000"'} style="text-transform: none;">${$(p2)?.outerHTML}</clone>`
           } catch (err) {
             alert(err.message)
           }
@@ -370,8 +370,8 @@ function CreateButton() {
         leaderboardInner.style.height = "0rem"
       }
     });
-    document.getElementById("currentHeaderSize").innerHTML = $('.stream-chat-header') ? $('.stream-chat-header').offsetHeight / 10 : 5;
-    document.getElementById("replaceStreamChat").innerHTML = $('#chat-room-header-label') ? $('#chat-room-header-label').innerHTML : "Stream Chat"
+    document.getElementById("currentHeaderSize").innerHTML = $('.stream-chat-header') ? $('.stream-chat-header')?.offsetHeight / 10 : 5;
+    document.getElementById("replaceStreamChat").innerHTML = $('#chat-room-header-label') ? $('#chat-room-header-label')?.innerHTML : "Stream Chat"
   } else {
     false
   }
@@ -418,7 +418,7 @@ function ChatEditLast(var1) {
   //if (!lastScannedMessage) {
   i0 = allChatMessages.length - var1;
   /*} else {
-    i0 = Array.from($('ul, .chat-scrollable-area__message-container').childNodes).findIndex(function (item) {
+    i0 = Array.from($('ul, .chat-scrollable-area__message-container').childNodes)?.findIndex(function (item) {
       return item == lastScannedMessage
     })
   }*/
@@ -452,13 +452,13 @@ function ChatEditLast(var1) {
       }
     }
     //lastScannedMessage = allChatMessages[allChatMessages.length - 1]
-    //console.log(lastScannedMessage, Array.from($('ul, .chat-scrollable-area__message-container').childNodes).findIndex(function (item) {
+    //console.log(lastScannedMessage, Array.from($('ul, .chat-scrollable-area__message-container').childNodes)?.findIndex(function (item) {
     //  return item == lastScannedMessage
     //}))
   }
   /*if (document.querySelector('.name-display__name')) {
     if (!document.querySelector('.name-display__name').innerHTML.includes('<div')) {
-      document.querySelector('.name-display__name').innerHTML = '<div class="InjectLayout-sc-588ddc-0 kUvjun"><button data-a-target="chat-badge" aria-describedby="93092e97b1e5f4e17c165ee4d01ad630" control-id="ControlID-626"><img alt="Verified" aria-label="Extension Admin badge" class="chat-badge" src="https://static-cdn.jtvnw.net/badges/v1/d12a2e27-16f6-41d0-ab77-b780518f00a3/1" srcset="https://static-cdn.jtvnw.net/badges/v1/d12a2e27-16f6-41d0-ab77-b780518f00a3/1 1x, https://static-cdn.jtvnw.net/badges/v1/d12a2e27-16f6-41d0-ab77-b780518f00a3/2 2x, https://static-cdn.jtvnw.net/badges/v1/d12a2e27-16f6-41d0-ab77-b780518f00a3/3 4x"></button></div>' + $('.name-display__name').innerHTML
+      document.querySelector('.name-display__name').innerHTML = '<div class="InjectLayout-sc-588ddc-0 kUvjun"><button data-a-target="chat-badge" aria-describedby="93092e97b1e5f4e17c165ee4d01ad630" control-id="ControlID-626"><img alt="Verified" aria-label="Extension Admin badge" class="chat-badge" src="https://static-cdn.jtvnw.net/badges/v1/d12a2e27-16f6-41d0-ab77-b780518f00a3/1" srcset="https://static-cdn.jtvnw.net/badges/v1/d12a2e27-16f6-41d0-ab77-b780518f00a3/1 1x, https://static-cdn.jtvnw.net/badges/v1/d12a2e27-16f6-41d0-ab77-b780518f00a3/2 2x, https://static-cdn.jtvnw.net/badges/v1/d12a2e27-16f6-41d0-ab77-b780518f00a3/3 4x"></button></div>' + $('.name-display__name')?.innerHTML
     }
   }*/
   //console.log(Date.now() - timer1)
@@ -468,24 +468,24 @@ function CustomCommands() {
   if (unrecognizedCommand?.innerHTML.toLowerCase().startsWith("unrecognized command: /dm")) {
     if (document.designMode == 'on') {
       document.designMode = 'off';
-      setTimeout(function () { $('.chat-wysiwyg-input__placeholder').innerText = 'Send a message' }, 3000)
+      setTimeout(function () { $('.chat-wysiwyg-input__placeholder') ? $('.chat-wysiwyg-input__placeholder').innerText = 'Send a message' : void(0)}, 3000)
     } else {
       document.designMode = 'on';
     }
-    $('[aria-label=Close]').click()
-    $('.chat-wysiwyg-input__placeholder').innerText = `designMode is now ${document.designMode}`
+    $('[aria-label=Close]')?.click()
+    $('.chat-wysiwyg-input__placeholder') ? $('.chat-wysiwyg-input__placeholder').innerText = `designMode is now ${document.designMode}` : void(0)
   }
 }
 /*function CustomCommands2F2(event) {
   console.log(event.keyCode, event.keyCode == 13, event.CC)
-  if ($('[data-test-selector=chat-input]').value == '/dm') {
-    $('[data-test-selector=chat-input]').dispatchEvent(new KeyboardEvent('keyup', {
+  if ($('[data-test-selector=chat-input]')?.value == '/dm') {
+    $('[data-test-selector=chat-input]')?.dispatchEvent(new KeyboardEvent('keyup', {
       'key': 'Enter',
       'keyCode': 13,
       'code': 'Enter',
       'which': 13,
     }));
-    $('[data-a-target=chat-input]').removeEventListener("keyup", CustomCommands2F2);
+    $('[data-a-target=chat-input]')?.removeEventListener("keyup", CustomCommands2F2);
     setTimeout(CustomCommands2F2, 5000,)
   }
 }
@@ -493,7 +493,7 @@ let CustomCommandsV = setInterval(CustomCommands2F, 3000)
 function CustomCommands2F() {
   console.log('aaa')
   if ($('[data-a-target=chat-input]')) {
-    $('[data-a-target=chat-input]').addEventListener("keyup", CustomCommands2F2);
+    $('[data-a-target=chat-input]')?.addEventListener("keyup", CustomCommands2F2);
     clearInterval(CustomCommandsV)
   }
 }*/
@@ -557,11 +557,11 @@ function RefreshVideos() {
   let currentTimeEle = $('[data-a-target=player-seekbar-current-time]')
   let videoDurationEle = $('[data-a-target=player-seekbar-duration]')
   if (location.href.match(/twitch.tv\/videos\//) && currentTimeEle && videoDurationEle) {
-    let isLiveNow = $('div.cdkvSQ > div:nth-child(2)').innerText
+    let isLiveNow = $('div.cdkvSQ > div:nth-child(2)')?.innerText
     let videoDuration = videoDurationEle?.innerText
     let currentTime = currentTimeEle?.innerText
     let timeRemaining = Time.fromString(videoDuration).asSeconds - Time.fromString(currentTime).asSeconds
-    if (location.href.match(/twitch.tv\/videos\//) && currentTimeEle && isLiveNow == 'streaming live now' && $('[data-a-target=tw-input]').value.toLowerCase() != '#vrfd' /*Video Refresh Function Disable*/ && (isLiveNow.match(/sec|min|hour/gi) || (videoDuration[0] >= 18 && isLiveNow.match(/sec|min|hour|yesterday|2 day/gi))) && timeRemaining < 120 && videoDurationEle.innerText != '00:00:00' && resetVid) {
+    if (location.href.match(/twitch.tv\/videos\//) && currentTimeEle && isLiveNow == 'streaming live now' && $('[data-a-target=tw-input]')?.value.toLowerCase() != '#vrfd' /*Video Refresh Function Disable*/ && (isLiveNow.match(/sec|min|hour/gi) || (videoDuration[0] >= 18 && isLiveNow.match(/sec|min|hour|yesterday|2 day/gi))) && timeRemaining < 120 && videoDurationEle.innerText != '00:00:00' && resetVid) {
       resetVid = confirm('Reset video?')
       if (resetVid) {
         location.search = '?t=' + currentTimeEle.innerText.replace(':', 'h').replace(':', 'm') + 's'
@@ -620,12 +620,12 @@ document.addEventListener('load', document.addEventListener('keyup', function (e
 //skip 15 seconds on click of skip 15
 try {
   $('#skip15p')?.addEventListener('click', function () {
-    $('video').currentTime += 15;
+    $('video') ? $('video').currentTime += 15 : void(0);
   })
 } catch (error) {
   setTimeout(function () {
     $('#skip15p')?.addEventListener('click', function () {
-      $('video').currentTime += 15;
+      $('video') ? $('video').currentTime += 15 : void(0);
     })
   }, 5000)
 }
@@ -649,13 +649,13 @@ function clearingSetInterval(f, t) {
     )
 }
 $("#apply")?.addEventListener("click", function () {
-  $$("clone").forEach(cloneele => {
+  $$("clone")?.forEach(cloneele => {
     if (!cloneele.attributes.repeating?.nodeValue) {
       clearingSetInterval(function (self) {
         try {
           if (!cloneele.attributes.destroyed) {
             try {
-              cloneele.innerHTML = $(cloneele.attributes.e.nodeValue).outerHTML
+              cloneele.innerHTML = $(cloneele.attributes.e.nodeValue)?.outerHTML
             } catch (err) {
               alert(err.message)
             }
