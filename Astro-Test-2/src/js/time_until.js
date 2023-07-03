@@ -23,6 +23,7 @@ try {
     //const MAX_CALUCLATEABLE_DATE = new Date(Date.now() + 2_678_400_000 - 1);
     const MAX_CALUCLATEABLE_DATE = new Date(MAX_DATE_NUMBER - 1);
     const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+    const specialDays = ['Everyday', 'Weekdays', 'Weekends', 'Wedless_wds']
     /**
      * @type {Box[]}
      */
@@ -47,7 +48,7 @@ try {
     const removeCommentsPattern = /\/\/.*|\/\*[^]*?\*\//g;
     /**
      * 
-     * @param {'Sunday' | 'Monday' | 'Tuesday' | 'Wednesday' | 'Thursday' | 'Friday' | 'Saturday'} dayOfWeek 
+     * @param {'Sunday' | 'Monday' | 'Tuesday' | 'Wednesday' | 'Thursday' | 'Friday' | 'Saturday' | 'Everyday' | 'Weekdays' | 'Weekends' | 'Wedless_wds'} dayOfWeek 
      * @param {number} hours 
      * @param {number} minutes 
      * @param {number} seconds 
@@ -56,16 +57,50 @@ try {
      */
     function GetNextDayLocal(dayOfWeek, hours = 8, minutes = 30, seconds = 0, milliseconds = 0) {
         const dayIndex = days?.indexOf(dayOfWeek);
-        if (dayIndex === -1) {
+        const specialDayIndex = specialDays?.indexOf(dayOfWeek);
+        const d = new Date();
+        if (dayIndex === -1 && specialDayIndex === -1) {
             throw new Error('Invalid day of week');
         }
-        const d = new Date();
-        d.setDate(d.getDate() + (7 + dayIndex - d.getDay()) % 7);
-        d.setHours(hours);
-        d.setMinutes(minutes);
-        d.setSeconds(seconds);
-        d.setMilliseconds(milliseconds);
-        return d;
+        if (specialDayIndex === -1) {
+            d.setDate(d.getDate() + (7 + dayIndex - d.getDay()) % 7);
+            d.setHours(hours);
+            d.setMinutes(minutes);
+            d.setSeconds(seconds);
+            d.setMilliseconds(milliseconds);
+            return d;
+        } else if (specialDayIndex === 0) { // Everyday
+            const asToday = GetNextDayLocal(days[d.getDay()], hours, minutes, seconds, milliseconds)
+            const asTomorrow = GetNextDayLocal(days[(d.getDay() + 1) % 7], hours, minutes, seconds, milliseconds)
+            if (asToday.getTime() > d.getTime()) return asToday
+            else return asTomorrow
+        } else if (specialDayIndex === 1) { // Weekdays
+            const weekdays = [1, 2, 3, 4, 5]
+            const asToday = GetNextDayLocal(days[d.getDay()], hours, minutes, seconds, milliseconds)
+            const asTomorrow = GetNextDayLocal(days[(d.getDay() + 1) % 7], hours, minutes, seconds, milliseconds)
+            const asMonday = GetNextDayLocal('Monday', hours, minutes, seconds, milliseconds)
+            if (asToday.getTime() > d.getTime() && weekdays.indexOf(asToday.getDay()) !== -1) return asToday
+            else if (weekdays.indexOf(asTomorrow.getDay()) !== -1) return asTomorrow
+            else return asMonday
+        } else if (specialDayIndex === 2) { // Weekends
+            const weekdays = [0, 6];
+            const asToday = GetNextDayLocal(days[d.getDay()], hours, minutes, seconds, milliseconds)
+            const asTomorrow = GetNextDayLocal(days[(d.getDay() + 1) % 7], hours, minutes, seconds, milliseconds)
+            const asSaturday = GetNextDayLocal('Saturday', hours, minutes, seconds, milliseconds)
+            if (asToday.getTime() > d.getTime() && weekdays.indexOf(asToday.getDay()) !== -1) return asToday
+            else if (weekdays.indexOf(asTomorrow.getDay()) !== -1) return asTomorrow
+            else return asSaturday
+        } else if (specialDayIndex === 3) { // Weekendless Wednesday
+            const weekdays = [1, 2, 4, 5]
+            const asToday = GetNextDayLocal(days[d.getDay()], hours, minutes, seconds, milliseconds)
+            const asTomorrow = GetNextDayLocal(days[(d.getDay() + 1) % 7], hours, minutes, seconds, milliseconds)
+            const asDayAfterTomorrow = GetNextDayLocal(days[(d.getDay() + 2) % 7], hours, minutes, seconds, milliseconds)
+            const asMonday = GetNextDayLocal('Monday', hours, minutes, seconds, milliseconds)
+            if (asToday.getTime() > d.getTime() && weekdays.indexOf(asToday.getDay()) !== -1) return asToday
+            else if (weekdays.indexOf(asTomorrow.getDay()) !== -1) return asTomorrow
+            else if (weekdays.indexOf(asDayAfterTomorrow.getDay()) !== -1) return asDayAfterTomorrow
+            else return asMonday
+        }
     }
     /**
      * 
@@ -85,7 +120,7 @@ try {
             const [_, year, month, day, hour, minute, seconds, period] = string.match(/^(\d{4})-(\d{2})-(\d{2}) (\d{1,2}):(\d{2})(:\d{2})?([APap][mM])?/);
             const calhrs = period === undefined ? hour : (hour === '12' ? period.toLowerCase() === 'pm' ? '12' : '0' : period.toLowerCase() === 'pm' ? +hour + 12 : hour);
             return new Date(year, month - 1, day, calhrs, minute, seconds?.replace(':', '') ?? 0);
-        } else if (string.match(/^([A-Z][a-z]*) (\d{1,2}):(\d{2})(:\d{2})?([APap][mM])?/)) {
+        } else if (string.match(/^([A-Z][a-z_]*) (\d{1,2}):(\d{2})(:\d{2})?([APap][mM])?/)) {
             const [_, dayOfWeek, hour, minute, seconds, period] = string.match(/^(\w+) (\d{1,2}):(\d{2})(:\d{2})?([APap][mM])?/);
             const calhrs = period === undefined ? hour : (hour === '12' ? period.toLowerCase() === 'pm' ? '12' : '0' : period.toLowerCase() === 'pm' ? +hour + 12 : hour);
             let longDayOfWeek;
@@ -99,18 +134,10 @@ try {
                 case 'Sa': case 'Sat': longDayOfWeek = 'Saturday'; break;
                 default: longDayOfWeek = dayOfWeek;
             }
-            switch (longDayOfWeek) {
-                case 'Sunday':
-                case 'Monday':
-                case 'Tuesday':
-                case 'Wednesday':
-                case 'Thursday':
-                case 'Friday':
-                case 'Saturday':
-                    return GetNextDayLocal(longDayOfWeek, calhrs, minute, seconds?.replace(':', '') ?? 0);
-                default:
-                    throw new Error('Invalid day of week');
-            }
+            if (days?.indexOf(longDayOfWeek) !== -1 || specialDays?.indexOf(longDayOfWeek) !== -1) {
+                return GetNextDayLocal(longDayOfWeek, calhrs, minute, seconds?.replace(':', '') ?? 0);
+
+            } else throw new Error('Invalid day of week: ' + longDayOfWeek + '|' + specialDays?.indexOf(longDayOfWeek));
         } else {
             throw new Error(`Invalid string format: "${string}"`);
         }
@@ -221,7 +248,7 @@ try {
      * @param {boolean} isNotification
      * @param {{dayOfWeek: string | null, date: string | null,}} boxSettings
      */
-    function nextUpConverter(oldNextUpText = "", boxSettings = {dayOfWeek: null, date: null}, isNotification = false) {
+    function nextUpConverter(oldNextUpText = "", boxSettings = { dayOfWeek: null, date: null }, isNotification = false) {
         const nextUpText = oldNextUpText.match(/\*dis(?:play)? ?\((.*?)\)\*/);
         let nextUpText2 = nextUpText ? nextUpText[1] : oldNextUpText
         if (!nextUpText && (/^([A-Z][a-z]*) (\d{1,2}):(\d{2})(:\d{2})?([APap][mM])?/.test(nextUpText2) || /^(\d{4})-(\d{2})-(\d{2}) (\d{1,2}):(\d{2})(:\d{2})?([APap][mM])?/.test(nextUpText2))) {
@@ -232,7 +259,7 @@ try {
             }
         }
         nextUpText2 = nextUpText2.replace(notificationTextRegEx, '').replace(regNotification, '').replace(regNotificationOnClick, '').replace(regNotificationOpen, '')
-        if(isNotification) {
+        if (isNotification) {
             const notificationText = oldNextUpText.match(notificationTextRegEx)
             nextUpText2 = notificationText ? notificationText[1] : nextUpText2;
         }
@@ -447,7 +474,7 @@ try {
                     }
                 } else {
                     const regAlarm = /\*ALARM\*/i;
-                    if(bypassTickTest === true){
+                    if (bypassTickTest === true) {
                         value.alarm = true;
                         value.notification = true;
                     }
@@ -457,10 +484,10 @@ try {
                         console.log(value.alarm)
                     }
                     if ((titleValue.match(regNotification) || value.text.match(regNotification) || value.text.match(notificationTextRegEx)) && value.notification === false && bypassTickTest === false) {
-                        const valueNotificationOnClickProto = (value.text.match(regNotificationOnClick) ?? ['',''])[1].replace(/\\([^])/, '$1') || `window.open('${(value.text.match(regNotificationOpen) ?? ['', ''])[1].replace('\\/', '/')}', '_blank')`;
+                        const valueNotificationOnClickProto = (value.text.match(regNotificationOnClick) ?? ['', ''])[1].replace(/\\([^])/, '$1') || `window.open('${(value.text.match(regNotificationOpen) ?? ['', ''])[1].replace('\\/', '/')}', '_blank')`;
                         console.log(valueNotificationOnClickProto)
                         const valueNotificationOnClick = valueNotificationOnClickProto == null ? '' : valueNotificationOnClickProto
-                        notifyMe(nextUpConverter(value.text, undefined, true), [{type: "click", listener: Function('ev', valueNotificationOnClick)}])
+                        notifyMe(nextUpConverter(value.text, undefined, true), [{ type: "click", listener: Function('ev', valueNotificationOnClick) }])
                         value.notification = true
                         console.log(value.notification, value.text)
                     }
