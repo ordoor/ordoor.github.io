@@ -23,7 +23,7 @@ try {
     //const MAX_CALUCLATEABLE_DATE = new Date(Date.now() + 2_678_400_000 - 1);
     const MAX_CALUCLATEABLE_DATE = new Date(MAX_DATE_NUMBER - 1);
     const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-    const specialDays = ['Everyday', 'Weekdays', 'Weekends', 'Wedless_wds']
+    const specialDays = ['Everyday', 'Weekdays', 'Weekends', 'Wedless_wds'];
     /**
      * @type {Box[]}
      */
@@ -490,6 +490,10 @@ try {
                         notifyMe(nextUpConverter(value.text, undefined, true), [{ type: "click", listener: Function('ev', valueNotificationOnClick) }])
                         value.notification = true
                         console.log(value.notification, value.text)
+                    }
+                    if (value.text.match(/^[A-Z][a-z_]/)?.length && specialDays?.indexOf(value.text.match(/^[A-Z][a-z_]*/)[0]) !== -1 && value.date.getTime() < new Date().getTime()) {
+                        console.log(value)
+                        value.date = StringToDate(value.text)
                     }
                 }
 
